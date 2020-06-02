@@ -1,24 +1,24 @@
 {
-  "name": "warehouse.webopers.com",
-  "version": "1.0.0",
-  "description": "Warehouse Manage Web App",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/webopers/warehouse.git"
-  },
-  "author": "Nguyen Khac Khanh - Encacap",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/webopers/warehouse/issues"
-  },
-  "homepage": "https://github.com/webopers/warehouse#readme",
-  "devDependencies": {
-    "eslint": "^6.8.0",
-    "eslint-config-airbnb-base": "^14.1.0",
-    "eslint-plugin-import": "^2.20.2"
-  }
+	"name": "warehouse.webopers.com",
+	"version": "1.0.0",
+	"description": "Warehouse Manager Web App",
+	"main": "index.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/webopers/warehouse.git"
+	},
+	"author": "Nguyen Khac Khanh - Encacap",
+	"license": "ISC",
+	"bugs": {
+		"url": "https://github.com/webopers/warehouse/issues"
+	},
+	"homepage": "https://github.com/webopers/warehouse#readme",
+	"devDependencies": {
+		"eslint": "^6.8.0",
+		"eslint-config-airbnb-base": "^14.1.0",
+		"eslint-plugin-import": "^2.20.2"
+	}
 }
