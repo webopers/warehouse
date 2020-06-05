@@ -1,8 +1,5 @@
 ## Warehouse Manager
-
-- Quản lý kho hàng
-- Quản lý vận chuyển
-- Thống kê nhập, xuất, tồn kho, chi phí, lợi nhuận, ...
+Dự án kết thúc học phần môn Phân tích thiết kế giải thuật
 
 ## Thành viên
 
