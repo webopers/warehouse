@@ -1,3 +1,9 @@
+$borderColor: #ecf0f3;
+$primaryColor: #f64e60;
+$primaryColorLight: #f64e5f4d;
+$secondaryColor: #1bc5bd;
+$secondaryColorLight: #c9f7f5;
+
 * {
 	box-sizing: border-box;
 }
@@ -5,4 +11,79 @@
 body {
 	margin: 0;
 	padding: 0;
+	font-family: "Quicksand", sans-serif;
+	font-size: 17px;
+	font-weight: 400;
+}
+
+.header {
+	position: fixed;
+	z-index: 1000;
+	top: 0;
+	left: 0;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	width: 100%;
+	height: 80px;
+	border-bottom: 1px solid $borderColor;
+}
+
+.brand {
+	color: $primaryColor;
+	font-size: 30px;
+	font-weight: 500;
+}
+
+.topbar {
+	display: flex;
+	&__item {
+		height: 36px;
+		margin-left: 12px;
+		border-radius: 10px;
+		font-size: 14px;
+		font-weight: 600;
+		color: #b5b5c3;
+		transition: 0.2s color, 0.2s background-color;
+	}
+	&__item:hover {
+		background-color: #f3f6f9;
+		color: $primaryColor;
+		cursor: pointer;
+	}
+	&__btn {
+		position: relative;
+		padding: 8px 14px 0;
+		border: 1px solid transparent;
+		background-color: $secondaryColorLight;
+		color: $secondaryColor;
+		transition: 0.2s color, 0.2s background-color;
+	}
+	&__btn:hover {
+		background-color: $secondaryColor;
+		color: #fff;
+		cursor: pointer;
+	}
+	&__notification {
+		padding: 8px 14px;
+		background-color: $primaryColorLight;
+		color: $primaryColor;
+	}
+	&__notification:hover {
+		background-color: $primaryColor;
+		color: #fff;
+	}
+	&__notification--empty {
+		border: 1px solid $borderColor;
+		background-color: #fff;
+		color: #b5b5c3;
+	}
+	&__icon {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		width: 100%;
+		height: 100%;
+		font-size: 17px;
+	}
 }
