@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="vi">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="shortcut icon" href="/assets/images/favicon.svg" type="image/x-icon" />
+		<link rel="stylesheet" href="/assets/css/account.min.css" />
+		<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,400;0,600;1,300&display=swap" />
+		<link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.12.0/css/all.css" />
+		<title>Information - Webopers</title>
+	</head>
+	<body>
+		<div class="auth auth-pb-0">
+			<div class="auth-header">
+				<div class="auth-heading">
+					Welcome to
+					<span><a href="/">Webopers</a></span>
+				</div>
+				<div class="auth-sub-heading">Give us more information about you <br />for a better experience</div>
+				<div class="auth-step">
+					<div class="auth-step-item"></div>
+					<div class="auth-step-item auth-step-item-active"></div>
+				</div>
+			</div>
+			<div class="auth-form">
+				<div class="input-group">
+					<div class="input-group-item">
+						<i class="far fa-user input-group-item-icon input-group-item-icon-left"></i>
+						<input type="text" id="full-name" class="input-group-item-text" placeholder="Full name" />
+						<div class="input-group-item-alert">Full name error</div>
+					</div>
+				</div>
+				<div class="auth-form-btn-group auth-form-btn-mt">
+					<button class="auth-form-btn auth-form-btn-primary" id="continue-btn">
+						<div class="auth-form-btn-spinner"></div>
+						Continue
+					</button>
+				</div>
+			</div>
+		</div>
+		<script defer src="https://www.gstatic.com/firebasejs/7.14.2/firebase-app.js"></script>
+		<script defer src="https://www.gstatic.com/firebasejs/7.14.2/firebase-auth.js"></script>
+		<script defer type="module" src="/assets/js/information.js?version=1.0.0"></script>
+	</body>
+</html>
