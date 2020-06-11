@@ -1,9 +1,12 @@
 $borderColor: #ecf0f3;
 $textColor: #272343;
-$primaryColor: #f64e60;
-$primaryColorLight: #f64e5f4d;
+$textColorLight: #b5b5c3;
+$primaryColor: #4fc4cf;
+$primaryColorLight: #1bc5bd;
 $secondaryColor: #1bc5bd;
 $secondaryColorLight: #c9f7f5;
+$hoverBackground: #fafafa;
+$exportColor: #f64e60;
 
 * {
 	box-sizing: border-box;
@@ -12,12 +15,14 @@ $secondaryColorLight: #c9f7f5;
 body {
 	margin: 0;
 	padding: 0;
+	background-color: #f2f4f8;
 	font-family: "Quicksand", sans-serif;
-	font-size: 17px;
+	font-size: 16px;
 	font-weight: 400;
+	transition: 0.2s color;
 }
 
-.header {
+header.header {
 	position: fixed;
 	z-index: 1000;
 	top: 0;
@@ -27,7 +32,11 @@ body {
 	align-items: center;
 	width: 100%;
 	height: 80px;
-	border-bottom: 1px solid $borderColor;
+	box-shadow: 0 0 12px rgba($color: #000000, $alpha: 0.1);
+	background-color: #fff;
+	.container {
+		padding: 0;
+	}
 }
 
 .brand {
@@ -52,7 +61,7 @@ body {
 		top: 19px;
 		right: -2px;
 		width: 20px;
-		height: 23px;
+		height: 24px;
 		background-color: white;
 	}
 }
@@ -62,7 +71,7 @@ body {
 	&__item {
 		position: relative;
 		padding: 28px 20px;
-		color: $textColor;
+		color: #b5b5c3;
 		font-weight: 500;
 		transition: 0.2s color;
 	}
@@ -81,10 +90,9 @@ body {
 		transform: translateX(-50%);
 		display: none;
 		width: 50px;
-		height: 5px;
-		border-top-left-radius: 5px;
-		border-top-right-radius: 5px;
-		// background-color: $primaryColor;
+		height: 4px;
+		border-top-left-radius: 4px;
+		border-top-right-radius: 4px;
 	}
 	.active.topbar__item::after {
 		display: block;
@@ -93,5 +101,177 @@ body {
 }
 
 .paper {
-	margin-top: 80px;
+	min-height: 100px;
+	margin-top: 130px;
+	margin-bottom: 50px;
+}
+
+.paper.container {
+	padding: 0;
+}
+
+.block {
+	width: 100%;
+	min-height: 200px;
+	box-shadow: 0 0 24px rgba($color: #000000, $alpha: 0.05);
+	border-radius: 6px;
+	padding: 20px 30px;
+	background-color: #fff;
+	&__header {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+	}
+	&__heading {
+		font-size: 19px;
+		font-weight: 600;
+		i {
+			margin-left: 14px;
+			color: $textColorLight;
+		}
+		span {
+			margin-left: 10px;
+			margin-right: 4px;
+			font-size: 18px;
+			color: $textColorLight;
+			transition: 0.2s color;
+		}
+		span:hover,
+		span.active {
+			color: $textColor;
+			cursor: pointer;
+		}
+	}
+	&__sub-heading {
+		margin-top: 4px;
+		color: $textColorLight;
+		font-size: 14px;
+		font-weight: 500;
+	}
+}
+
+.btn {
+	height: 36px;
+	border-radius: 6px;
+	padding: 5px 14px 6px 10px;
+	font-weight: 500;
+	color: #fff;
+	&-primary {
+		background-color: #6993ff;
+	}
+	&-primary:hover {
+		background-color: #4a7dff;
+	}
+
+	&-danger {
+		background-color: #f64e60;
+	}
+
+	&-danger:hover {
+		background-color: #ee2d41;
+	}
+}
+
+.checkbox-container {
+	position: relative;
+	left: -24px;
+	top: 3px;
+	display: inline-block;
+	.checkbox-mark {
+		position: relative;
+		top: 2px;
+		left: -4px;
+		z-index: 2;
+		width: 20px;
+		height: 20px;
+		border-radius: 50%;
+		opacity: 0;
+		cursor: pointer;
+	}
+	.checkbox-face {
+		position: absolute;
+		top: 2px;
+		left: -4px;
+		width: 20px;
+		height: 20px;
+		border: 1px solid $primaryColor;
+		border-radius: 50%;
+		transition: 0.2s background-color;
+		overflow: hidden;
+		.checkbox-check {
+			display: none;
+			width: 100%;
+			height: 100%;
+			border-radius: 50%;
+			border: 3px solid #fff;
+		}
+	}
+	.checkbox-mark:checked ~ .checkbox-face {
+		background-color: $primaryColor;
+	}
+	.checkbox-mark:checked ~ .checkbox-face .checkbox-check {
+		display: block;
+	}
+}
+
+.table-response {
+	overflow-x: scroll;
+}
+
+.table {
+	margin-top: 28px;
+	margin-bottom: 0px;
+	border: none;
+	font-weight: 500;
+	thead,
+	td,
+	th,
+	tr,
+	tbody {
+		border: none;
+	}
+	thead {
+		background-color: #f3f6f9;
+		border-radius: 5px;
+	}
+	th {
+		font-weight: 600;
+		text-transform: uppercase;
+		font-size: 14px;
+		color: $textColorLight;
+	}
+	thead th:first-child {
+		padding-left: 30px;
+		border-top-left-radius: 5px;
+		border-bottom-left-radius: 5px;
+	}
+	thead th:last-child {
+		border-top-right-radius: 5px;
+		border-bottom-right-radius: 5px;
+	}
+	td {
+		vertical-align: middle;
+	}
+	tr td:first-child {
+		padding-left: 30px;
+	}
+	tbody {
+		max-height: 400px;
+		tr {
+			transition: 0.2s color;
+		}
+		tr:hover {
+			color: $primaryColor;
+			cursor: pointer;
+			.checkbox-face {
+				background-color: $primaryColor;
+			}
+		}
+		tr.active {
+			color: $primaryColor;
+			td:first-child {
+				border-radius: 5px;
+			}
+		}
+	}
 }

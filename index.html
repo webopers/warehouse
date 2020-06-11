@@ -6,13 +6,13 @@
 		<link rel="shortcut icon" href="/assets/images/box.svg" type="image/x-icon" />
 		<link rel="stylesheet" href="/assets/css/bootstrap.min.css" />
 		<link rel="stylesheet" href="/assets/css/bootstrap-grid.min.css" />
-		<link rel="stylesheet" href="/assets/css/base.min.css" />
-		<link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+		<link rel="stylesheet" href="/assets/css/base.min.css?version=1.0.1" />
+		<link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
 		<link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.12.0/css/all.css" />
 		<title>Warehouse Manager</title>
 	</head>
 	<body>
-		<div class="header">
+		<header class="header">
 			<div class="container d-flex justify-content-between align-items-center">
 				<div class="brand">
 					<div class="brand__fancy">
@@ -29,29 +29,202 @@
 					<div class="topbar__item">
 						Nhân viên
 					</div>
+					<div class="topbar__item">
+						Nhật ký
+					</div>
 					<!-- <div class="topbar__item topbar__notification topbar__notification--empty">
 						Notifications: 0
 					</div> -->
 				</div>
 			</div>
-		</div>
-		<!-- <div class="paper">
-			<div class="container">
-				<div class="row d-flex justify-content-between">
-					Kho hàng
-					<div class="action">
-						<button class="btn btn-primary">Thêm</button>
-						<button>Xuất</button>
+		</header>
+		<div class="paper container">
+			<div class="row">
+				<div class="col-lg-12">
+					<div class="block">
+						<div class="block__header">
+							<div class="block__heading">
+								Warehouse
+								<i class="far fa-angle-right"></i>
+								<span class="active">Trong kho (12)</span>
+								<span>Đang giao (0)</span>
+								<span>Đã giao (120)</span>
+								<div class="block__sub-heading">
+									Last updated 20 minutes ago
+								</div>
+							</div>
+							<div class="block__action">
+								<button class="btn btn-sm btn-primary mr-3">
+									<i class="far fa-sign-in-alt pr-2 pl-1"></i>
+									Import
+								</button>
+								<button class="btn btn-sm btn-danger" title="Select at least 1 item for export">
+									<i class="fal fa-sign-out-alt pr-2 pl-1"></i>
+									Export
+								</button>
+							</div>
+						</div>
+						<table class="table table-borderless">
+							<thead>
+								<tr>
+									<th>Mã hàng</th>
+									<th>Tên hàng</th>
+									<th>Khối lượng</th>
+									<th>Thời gian nhập kho</th>
+									<th>Thời gian giao hàng</th>
+									<th>Địa chỉ nhận hàng</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td>
+										<div class="checkbox-container">
+											<input type="checkbox" name="select" class="checkbox-mark" />
+											<div class="checkbox-face">
+												<div class="checkbox-check"></div>
+											</div>
+										</div>
+										1851120020
+									</td>
+									<td>Dell G3 1579 8GB RAM 256GB SSD</td>
+									<td>0.2 KG</td>
+									<td>11/06/2020 - 13:50</td>
+									<td>13/06/2020</td>
+									<td>123 Nguyen Thi Bup Street <br />Hiep Thanh Ward <br />District 12, Ho Chi Minh</td>
+								</tr>
+								<tr>
+									<td>
+										<div class="checkbox-container">
+											<input type="checkbox" name="select" class="checkbox-mark" />
+											<div class="checkbox-face">
+												<div class="checkbox-check"></div>
+											</div>
+										</div>
+										1851120020
+									</td>
+									<td>Dell G3 1579 8GB RAM 256GB SSD</td>
+									<td>0.2 KG</td>
+									<td>11/06/2020 - 13:50</td>
+									<td>13/06/2020</td>
+									<td>123 Nguyen Thi Bup Street <br />Hiep Thanh Ward <br />District 12, Ho Chi Minh</td>
+								</tr>
+								<tr>
+									<td>
+										<div class="checkbox-container">
+											<input type="checkbox" name="select" class="checkbox-mark" />
+											<div class="checkbox-face">
+												<div class="checkbox-check"></div>
+											</div>
+										</div>
+										1851120020
+									</td>
+									<td>Dell G3 1579 8GB RAM 256GB SSD</td>
+									<td>0.2 KG</td>
+									<td>11/06/2020 - 13:50</td>
+									<td>13/06/2020</td>
+									<td>123 Nguyen Thi Bup Street <br />Hiep Thanh Ward <br />District 12, Ho Chi Minh</td>
+								</tr>
+								<tr>
+									<td>
+										<div class="checkbox-container">
+											<input type="checkbox" name="select" class="checkbox-mark" />
+											<div class="checkbox-face">
+												<div class="checkbox-check"></div>
+											</div>
+										</div>
+										1851120020
+									</td>
+									<td>Dell G3 1579 8GB RAM 256GB SSD</td>
+									<td>0.2 KG</td>
+									<td>11/06/2020 - 13:50</td>
+									<td>13/06/2020</td>
+									<td>123 Nguyen Thi Bup Street <br />Hiep Thanh Ward <br />District 12, Ho Chi Minh</td>
+								</tr>
+								<tr class="active">
+									<td>
+										<div class="checkbox-container">
+											<input type="checkbox" name="select" class="checkbox-mark" checked />
+											<div class="checkbox-face">
+												<div class="checkbox-check"></div>
+											</div>
+										</div>
+										1851120020
+									</td>
+									<td>Dell G3 1579 8GB RAM 256GB SSD</td>
+									<td>0.2 KG</td>
+									<td>11/06/2020 - 13:50</td>
+									<td>13/06/2020</td>
+									<td>123 Nguyen Thi Bup Street <br />Hiep Thanh Ward <br />District 12, Ho Chi Minh</td>
+								</tr>
+								<tr>
+									<td>
+										<div class="checkbox-container">
+											<input type="checkbox" name="select" class="checkbox-mark" />
+											<div class="checkbox-face">
+												<div class="checkbox-check"></div>
+											</div>
+										</div>
+										1851120020
+									</td>
+									<td>Dell G3 1579 8GB RAM 256GB SSD</td>
+									<td>0.2 KG</td>
+									<td>11/06/2020 - 13:50</td>
+									<td>13/06/2020</td>
+									<td>123 Nguyen Thi Bup Street <br />Hiep Thanh Ward <br />District 12, Ho Chi Minh</td>
+								</tr>
+								<tr>
+									<td>
+										<div class="checkbox-container">
+											<input type="checkbox" name="select" class="checkbox-mark" />
+											<div class="checkbox-face">
+												<div class="checkbox-check"></div>
+											</div>
+										</div>
+										1851120020
+									</td>
+									<td>Dell G3 1579 8GB RAM 256GB SSD</td>
+									<td>0.2 KG</td>
+									<td>11/06/2020 - 13:50</td>
+									<td>13/06/2020</td>
+									<td>123 Nguyen Thi Bup Street <br />Hiep Thanh Ward <br />District 12, Ho Chi Minh</td>
+								</tr>
+								<tr>
+									<td>
+										<div class="checkbox-container">
+											<input type="checkbox" name="select" class="checkbox-mark" />
+											<div class="checkbox-face">
+												<div class="checkbox-check"></div>
+											</div>
+										</div>
+										1851120020
+									</td>
+									<td>Dell G3 1579 8GB RAM 256GB SSD</td>
+									<td>0.2 KG</td>
+									<td>11/06/2020 - 13:50</td>
+									<td>13/06/2020</td>
+									<td>123 Nguyen Thi Bup Street <br />Hiep Thanh Ward <br />District 12, Ho Chi Minh</td>
+								</tr>
+								<tr>
+									<td>
+										<div class="checkbox-container">
+											<input type="checkbox" name="select" class="checkbox-mark" />
+											<div class="checkbox-face">
+												<div class="checkbox-check"></div>
+											</div>
+										</div>
+										1851120020
+									</td>
+									<td>Dell G3 1579 8GB RAM 256GB SSD</td>
+									<td>0.2 KG</td>
+									<td>11/06/2020 - 13:50</td>
+									<td>13/06/2020</td>
+									<td>123 Nguyen Thi Bup Street <br />Hiep Thanh Ward <br />District 12, Ho Chi Minh</td>
+								</tr>
+							</tbody>
+						</table>
 					</div>
 				</div>
-				<div>Hàng 1</div>
-				<div>Hàng 1</div>
-				<div>Hàng 1</div>
-				<div>Hàng 1</div>
-				<div>Hàng 1</div>
-				<div>Hàng 1</div>
-				<div>Hàng 1</div>
 			</div>
-		</div> -->
+		</div>
 	</body>
 </html>
