@@ -19,6 +19,7 @@
 		"indent": [2, "tab"],
 		"quotes": ["error", "double"],
 		"linebreak-style": ["error", "windows"],
-		"import/extensions": [0, { "js": "never" }]
+		"import/extensions": [0, { "js": "never" }],
+		"arrow-body-style": "off"
 	}
 }
