@@ -275,3 +275,23 @@ header.header {
 		}
 	}
 }
+
+.table-empty {
+	position: relative;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 100%;
+	margin: 60px 0 80px;
+	padding: 30px;
+	img {
+		// opacity: 0.2;
+		width: 200px;
+	}
+	&::before {
+		content: "Không có sản phẩm nào ở đây";
+		position: absolute;
+		bottom: 0;
+		color: $textColorLight;
+	}
+}
