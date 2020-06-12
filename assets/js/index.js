@@ -1,10 +1,106 @@
 import firebase from "./firebase-config.js";
 
-const developmentEnvironment = window.location.href.split("/")[2] === "warehouse.webopers.com";
+const developmentEnvironment = window.location.href.split("/")[2] !== "warehouse.webopers.com";
 
-firebase.auth().onAuthStateChanged((user) => {
-	if (!user) {
-		if (developmentEnvironment) Location.href = "/accounts/login/";
-		else Location.href = "/login/";
+const inventoryBtn = document.querySelector(".inventory");
+const deliveryBtn = document.querySelector(".delivery");
+const deliveredBtn = document.querySelector(".delivered");
+
+// const checkUserPosition = (userID) => {
+// 	database
+// 		.ref(`users/${userID}`)
+// 		.once("value")
+// 		.then((snapshot) => {
+// 			if (snapshot.val().position === "shipper") {
+// 				if (developmentEnvironment) window.location.href = "/shipper.html";
+// 				else window.location.href = "/shipper/";
+// 			}
+// 		});
+// };
+
+const highlightStatusBtn = (filter) => {
+	inventoryBtn.classList.remove("active");
+	deliveryBtn.classList.remove("active");
+	deliveredBtn.classList.remove("active");
+	if (filter === "inventory") inventoryBtn.classList.add("active");
+	else if (filter === "delivery") deliveryBtn.classList.add("active");
+	else deliveredBtn.classList.add("active");
+};
+
+const render = (items, filter) => {
+	const countItemStatus = { inventory: 0, delivery: 0, delivered: 0 };
+	let itemElements = "";
+	Object.keys(items).forEach((itemID) => {
+		const item = items[itemID];
+		countItemStatus[item.status] += 1;
+		if (item.status === filter) {
+			itemElements += `
+			<tr id="${itemID}">
+				<td>
+					<div class="checkbox-container">
+						<input type="checkbox" name="select" class="checkbox-mark" />
+						<div class="checkbox-face">
+							<div class="checkbox-check"></div>
+						</div>
+					</div>
+					1851120020
+				</td>
+				<td>${item.name}</td>
+				<td>${item.weight}</td>
+				<td>${item.importTime}</td>
+				<td>${item.exportDeadline}</td>
+				<td>
+					${item.deliveryAddress.street}<br />
+					Phường ${item.deliveryAddress.ward}<br />
+					Quận ${item.deliveryAddress.district}, ${item.deliveryAddress.city}</td>
+			</tr>
+			`;
+		}
+	});
+
+	highlightStatusBtn(filter);
+
+	const tableEmptyNode = document.querySelector(".table-empty");
+	const loadingNode = document.querySelector(".loading");
+
+	if (countItemStatus[filter] === 0) {
+		tableEmptyNode.classList.remove("d-none");
+	} else tableEmptyNode.classList.add("d-none");
+
+	inventoryBtn.innerText = `Trong kho (${countItemStatus.inventory})`;
+	deliveryBtn.innerText = `Đang giao (${countItemStatus.delivery})`;
+	deliveredBtn.innerText = `Đã giao (${countItemStatus.delivered})`;
+	document.querySelector(".warehouseItemsContainer").innerHTML = itemElements;
+	loadingNode.classList.add("d-none");
+	loadingNode.classList.remove("d-flex");
+};
+
+const getWarehouseItems = (warehouse, filter) => {
+	warehouse.on("value", (dataSnapshot) => {
+		render(dataSnapshot.val(), filter);
+	});
+};
+
+firebase.auth().onAuthStateChanged((userData) => {
+	if (!userData) {
+		if (developmentEnvironment) window.location.href = "/accounts/login.html";
+		else window.location.href = "/login/";
+	} else {
+		const database = firebase.database();
+		const warehouse = database.ref(`/warehouses/${userData.uid}`);
+
+		getWarehouseItems(warehouse, "inventory");
+
+		inventoryBtn.addEventListener("click", () => getWarehouseItems(warehouse, "inventory"));
+		deliveryBtn.addEventListener("click", () => getWarehouseItems(warehouse, "delivery"));
+		deliveredBtn.addEventListener("click", () => getWarehouseItems(warehouse, "delivered"));
+
+		// console.log(warehouseItems);
+		// const warehouse = firebase.database().ref(`/warehouses/${warehouseID}`);
+		// warehouses.on("value", (dataSnapshot) => {
+		// 	console.log(dataSnapshot.val());
+		// });
+		// const warehouseKey = warehouse.push().key;
+		// console.log(warehouseKey);
 	}
 });
