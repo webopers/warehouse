@@ -1,18 +1,19 @@
 import firebase from "./firebase-config.js";
-import { onImportClicked, renderList } from "./modules/insertWarehouseItem.js";
+import { onImportClicked, renderList, onRandomClicked } from "./modules/insertWarehouseItem.js";
 import renderOptions from "./modules/renderOptions.js";
+import onConfirmImportClicked from "./modules/confirmImport.js";
 
 const developmentEnvironment = window.location.href.split("/")[2] !== "warehouse.webopers.com";
 let categoriesData = [];
 let administrativeData = {};
 
-const onDistrictChanged = (district = "Quận 1") => {
-	renderOptions(administrativeData[district], "receiverWard");
+const onDistrictChanged = (district = "1") => {
+	renderOptions(administrativeData[district], "receiverWard", "Phường");
 };
 
 const handlingAdministrative = (data) => {
 	administrativeData = data;
-	renderOptions(Object.keys(administrativeData), "receiverDistrict");
+	renderOptions(Object.keys(administrativeData), "receiverDistrict", "Quận");
 	onDistrictChanged();
 };
 
@@ -22,7 +23,7 @@ const handlingCategories = (categories) => {
 };
 
 const getData = (database, callback) => {
-	database.on("value", (dataSnapshot) => {
+	database.orderByKey().on("value", (dataSnapshot) => {
 		callback(dataSnapshot.val());
 	});
 };
@@ -78,6 +79,8 @@ firebase.auth().onAuthStateChanged((userData) => {
 		const addCategoryInput = document.querySelector("#addCategoryInput");
 		const receiverDistrict = document.querySelector("#receiverDistrict");
 		const importBtn = document.querySelector("#importBtn");
+		const randomBtn = document.querySelector("#randomBtn");
+		const confirmImportBtn = document.querySelector("#confirmImport");
 
 		addCategoryBtn.addEventListener("click", () => onAddCategoryBtnClicked("show"));
 		closeAddCategoryBtn.addEventListener("click", () => onAddCategoryBtnClicked("hide"));
@@ -86,5 +89,7 @@ firebase.auth().onAuthStateChanged((userData) => {
 		});
 		receiverDistrict.addEventListener("change", () => onDistrictChanged(receiverDistrict.value));
 		importBtn.addEventListener("click", () => onImportClicked(getTime()));
+		randomBtn.addEventListener("click", () => onRandomClicked(getTime(), administrativeData));
+		confirmImportBtn.addEventListener("click", () => onConfirmImportClicked(warehouses));
 	}
 });

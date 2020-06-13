@@ -2,6 +2,7 @@ $borderColor: #ecf0f3;
 $textColor: #272343;
 $textColorLight: #b5b5c3;
 $primaryColor: #4fc4cf;
+$primaryColorBold: #43a2aa;
 $primaryColorLight: #1bc5bd;
 $secondaryColor: #1bc5bd;
 $secondaryColorLight: #c9f7f5;
@@ -189,10 +190,22 @@ header.header {
 	}
 }
 
+// .btn {
+// 	&-primary {
+// 		background-color: $primaryColor;
+// 		border-color: $primaryColor;
+// 		&:hover,
+// 		&:active {
+// 			background-color: $primaryColorBold;
+// 			border-color: $primaryColorBold;
+// 		}
+// 	}
+// }
+
 .checkbox-container {
 	position: relative;
 	left: -24px;
-	top: 3px;
+	top: 1px;
 	display: inline-block;
 	.checkbox-mark {
 		position: relative;

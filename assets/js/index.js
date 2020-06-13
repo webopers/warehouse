@@ -31,27 +31,35 @@ const render = (items, filter) => {
 	const countItemStatus = { inventory: 0, delivery: 0, delivered: 0 };
 	let itemElements = "";
 	Object.keys(items).forEach((itemID) => {
-		const item = items[itemID];
-		countItemStatus[item.status] += 1;
-		if (item.status === filter) {
-			itemElements = `
-			<tr id="${itemID}">
-				<td>
-					<div class="checkbox-container">
-						<input type="checkbox" name="select" class="checkbox-mark" />
-						<div class="checkbox-face">
-							<div class="checkbox-check"></div>
+		const { item, receiver } = items[itemID];
+		if (itemID !== "categories") {
+			const exportTime = {
+				year: item.exportDate.slice(0, 4),
+				month: item.exportDate.slice(5, 7),
+				date: item.exportDate.slice(8, 10),
+			};
+			countItemStatus[item.status] += 1;
+			if (item.status === filter) {
+				itemElements = `
+				<tr id="${itemID}">
+					<td class="d-flex" style="max-width: 540px;">
+						<div class="checkbox-container">
+							<input type="checkbox" name="select" class="checkbox-mark" />
+							<div class="checkbox-face">
+								<div class="checkbox-check"></div>
+							</div>
 						</div>
-					</div>
-					1851120020
-				</td>
-				<td>${item.name}</td>
-				<td>${item.category}</td>
-				<td>${item.weight}</td>
-				<td>${item.importTime}</td>
-				<td>${item.exportDeadline}</td>
-			</tr>
-			${itemElements}`;
+						<div>
+							${item.name}
+						</div>
+					</td>
+					<td>${item.category}</td>
+					<td>${item.weight}</td>
+					<td>${exportTime.date}/${exportTime.month}/${exportTime.year}</td>
+					<td>Quận ${receiver.district}, ${receiver.city}</td>
+				</tr>
+				${itemElements}`;
+			}
 		}
 	});
 
@@ -77,21 +85,6 @@ const getWarehouseItems = (warehouse, filter) => {
 		render(dataSnapshot.val(), filter);
 	});
 };
-
-// const onImportBtnClicked = () => {
-// 	if (importFormNode.classList.length === 1) importFormNode.classList.add("d-none");
-// 	else importFormNode.classList.remove("d-none");
-// };
-
-// const getTime = () => {
-// 	const date = new Date();
-// 	const today = date.getDate() < 10 ? `0${date.getDate()}` : date.getDate();
-// 	const month = date.getMonth() < 10 ? `0${date.getMonth() + 1}` : date.getMonth() + 1;
-// 	const year = date.getFullYear();
-// 	const hours = date.getHours() < 10 ? `0${date.getHours()}` : date.getHours();
-// 	const minutes = date.getMinutes() < 10 ? `0${date.getMinutes()}` : date.getMinutes();
-// 	return `${today}/${month}/${year} - ${hours}:${minutes}`;
-// };
 
 firebase.auth().onAuthStateChanged((userData) => {
 	if (!userData) {

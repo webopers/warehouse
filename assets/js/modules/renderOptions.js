@@ -1,4 +1,4 @@
-const renderOptions = (options, selectID) => {
+const renderOptions = (options, selectID, prefix = "") => {
 	const categoriesNode = document.querySelector(`#${selectID}`);
 	const { length } = categoriesNode.options;
 	for (let i = length - 1; i >= 0; i -= 1) {
@@ -6,7 +6,7 @@ const renderOptions = (options, selectID) => {
 	}
 	options.forEach((optionID) => {
 		const optionElement = document.createElement("option");
-		optionElement.text = optionID;
+		optionElement.text = prefix !== "" ? `${prefix} ${optionID}` : optionID;
 		optionElement.value = optionID;
 		categoriesNode.add(optionElement);
 	});
