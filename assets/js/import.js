@@ -68,6 +68,7 @@ firebase.auth().onAuthStateChanged((userData) => {
 		const database = firebase.database();
 		const warehouses = database.ref(`warehouses/${userData.uid}`);
 		const administrative = database.ref("administrative/");
+		const logs = database.ref(`logs/${userData.uid}`);
 
 		getData(warehouses.child("categories"), handlingCategories);
 		getData(administrative.child("Hồ Chí Minh"), handlingAdministrative);
@@ -90,6 +91,6 @@ firebase.auth().onAuthStateChanged((userData) => {
 		receiverDistrict.addEventListener("change", () => onDistrictChanged(receiverDistrict.value));
 		importBtn.addEventListener("click", () => onImportClicked(getTime()));
 		randomBtn.addEventListener("click", () => onRandomClicked(getTime(), administrativeData));
-		confirmImportBtn.addEventListener("click", () => onConfirmImportClicked(warehouses));
+		confirmImportBtn.addEventListener("click", () => onConfirmImportClicked(warehouses, logs, getTime()));
 	}
 });
