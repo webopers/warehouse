@@ -17,7 +17,7 @@
 		"no-console": "off",
 		"no-tabs": "off",
 		"indent": [2, "tab"],
-		"quotes": ["error", "double"],
+		"quotes": "off",
 		"linebreak-style": ["error", "windows"],
 		"import/extensions": [0, { "js": "never" }],
 		"arrow-body-style": "off"

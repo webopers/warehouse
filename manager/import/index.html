@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="vi">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="shortcut icon" href="/assets/images/favicon.svg" type="image/x-icon" />
+		<link rel="stylesheet" href="/assets/css/bootstrap.min.css" />
+		<link rel="stylesheet" href="/assets/css/bootstrap-grid.min.css" />
+		<link rel="stylesheet" href="/assets/css/base.min.css?version=1.0.1" />
+		<link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+		<link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.12.0/css/all.css" />
+		<title>Warehouse Manager</title>
+	</head>
+	<body>
+		<header class="header">
+			<div class="container d-flex justify-content-between align-items-center">
+				<div class="brand">
+					<div class="brand__fancy">
+						<div class="brand__background"></div>
+					</div>
+					<div class="brand__text">
+						Group 8
+					</div>
+				</div>
+				<div class="topbar">
+					<a href="/" class="topbar__item active">
+						Kho hàng
+					</a>
+					<a href="/manager/employees/" class="topbar__item">
+						Nhân viên
+					</a>
+					<a href="/logs/" class="topbar__item">
+						Nhật ký
+					</a>
+				</div>
+			</div>
+		</header>
+		<div class="paper container" style="width: 1080px;">
+			<div class="row">
+				<div class="col-lg-7">
+					<div class="loading d-none align-items-center justify-content-center">
+						<div class="loading__spinner"></div>
+					</div>
+					<div class="block p-5">
+						<div class="block__header">
+							<div class="block__heading">
+								Thông tin chi tiết đơn hàng
+							</div>
+						</div>
+						<div class="row mt-4 pt-2">
+							<div class="col-6">
+								<input type="text" class="form-control" id="warehouseItemName" placeholder="Tên hàng" />
+							</div>
+							<div class="col-6" id="categoriesContainer">
+								<div class="d-flex">
+									<select id="warehouseItemCategories" class="form-control">
+										<option value="">Danh mục</option>
+									</select>
+									<button class="btn btn-success ml-3" id="addCategoryBtn">+</button>
+								</div>
+								<div class="d-none">
+									<input type="text" class="form-control" id="addCategoryInput" placeholder="Thêm danh mục mới" />
+									<button class="btn btn-success ml-3" id="closeAddCategoryBtn">x</button>
+								</div>
+							</div>
+						</div>
+						<div class="row mt-3">
+							<div class="col-3">
+								<input type="number" class="form-control" id="warehouseItemWeight" placeholder="Khối lượng" />
+							</div>
+							<div class="col-5">
+								<input type="date" class="form-control" id="warehouseItemDeadline" placeholder="Thời gian giao hàng" />
+							</div>
+							<div class="col-4">
+								<input type="number" class="form-control" id="warehouseItemMoney" placeholder="Số tiền thu hộ" />
+							</div>
+						</div>
+						<div class="block__line-break"></div>
+						<div class="block__header">
+							<div class="block__heading">
+								Người nhận
+							</div>
+						</div>
+						<div class="row mt-4 pt-2">
+							<div class="col-4">
+								<input type="text" class="form-control" id="receiverName" placeholder="Họ và tên" />
+							</div>
+							<div class="col-4">
+								<input type="number" id="receiverPhone" class="form-control" placeholder="Điện thoại" />
+							</div>
+							<div class="col-4">
+								<input id="receiverEmail" class="form-control" placeholder="Địa chỉ Email" />
+							</div>
+						</div>
+						<div class="row mt-3">
+							<div class="col-6">
+								<input type="text" class="form-control" id="receiverStreet" placeholder="Địa chỉ" />
+							</div>
+							<div class="col-6">
+								<input id="receiverCity" class="form-control" placeholder="Thành phố" value="Hồ Chí Minh" disabled />
+							</div>
+						</div>
+						<div class="row mt-3">
+							<div class="col-6">
+								<select id="receiverDistrict" class="form-control" placeholder="Quận, huyện">
+									<option value="">Quận, huyện</option>
+								</select>
+							</div>
+							<div class="col-6">
+								<select id="receiverWard" class="form-control" placeholder="Phường, xã, thị trấn">
+									<option>Xã, phường, thị trấn</option>
+								</select>
+							</div>
+						</div>
+						<div class="row mt-5 mb-1 pt-2">
+							<div class="col-8">
+								<button class="btn btn-block btn-primary" id="importBtn">Nhập</button>
+							</div>
+							<div class="col-4">
+								<button class="btn btn-block btn-danger">Ngẫu nhiên</button>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-5">
+					<div class="block p-5 pb-0">
+						<div class="block__header pb-2">
+							<div class="block__heading">
+								Đơn hàng vừa thêm
+							</div>
+						</div>
+						<div class="border border-warning rounded text-warning p-3 mt-4" id="confirmWarning">
+							Bạn cần phải xác nhận lại lần nữa trước khi nhập hàng vào kho
+						</div>
+						<ul class="list-group mt-3 pt-2 block__import-confirm d-none" id="listContainer"></ul>
+						<div class="btn btn-block btn-primary mt-4 d-none" id="confirmImport">Xác nhận nhập hàng</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<script defer src="https://www.gstatic.com/firebasejs/7.15.0/firebase-app.js"></script>
+		<script defer src="https://www.gstatic.com/firebasejs/7.15.0/firebase-database.js"></script>
+		<script defer src="https://www.gstatic.com/firebasejs/7.15.0/firebase-auth.js"></script>
+		<script defer type="module" src="/assets/js/import.js"></script>
+	</body>
+</html>

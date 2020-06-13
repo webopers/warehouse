@@ -34,7 +34,7 @@ const render = (items, filter) => {
 		const item = items[itemID];
 		countItemStatus[item.status] += 1;
 		if (item.status === filter) {
-			itemElements += `
+			itemElements = `
 			<tr id="${itemID}">
 				<td>
 					<div class="checkbox-container">
@@ -46,15 +46,12 @@ const render = (items, filter) => {
 					1851120020
 				</td>
 				<td>${item.name}</td>
+				<td>${item.category}</td>
 				<td>${item.weight}</td>
 				<td>${item.importTime}</td>
 				<td>${item.exportDeadline}</td>
-				<td>
-					${item.deliveryAddress.street}<br />
-					Phường ${item.deliveryAddress.ward}<br />
-					Quận ${item.deliveryAddress.district}, ${item.deliveryAddress.city}</td>
 			</tr>
-			`;
+			${itemElements}`;
 		}
 	});
 
@@ -70,7 +67,7 @@ const render = (items, filter) => {
 	inventoryBtn.innerText = `Trong kho (${countItemStatus.inventory})`;
 	deliveryBtn.innerText = `Đang giao (${countItemStatus.delivery})`;
 	deliveredBtn.innerText = `Đã giao (${countItemStatus.delivered})`;
-	document.querySelector(".warehouseItemsContainer").innerHTML = itemElements;
+	document.querySelector(".warehouseItemsContainer").innerHTML = `<tr style="height: 20px;"></tr> ${itemElements}`;
 	loadingNode.classList.add("d-none");
 	loadingNode.classList.remove("d-flex");
 };
@@ -81,6 +78,21 @@ const getWarehouseItems = (warehouse, filter) => {
 	});
 };
 
+// const onImportBtnClicked = () => {
+// 	if (importFormNode.classList.length === 1) importFormNode.classList.add("d-none");
+// 	else importFormNode.classList.remove("d-none");
+// };
+
+// const getTime = () => {
+// 	const date = new Date();
+// 	const today = date.getDate() < 10 ? `0${date.getDate()}` : date.getDate();
+// 	const month = date.getMonth() < 10 ? `0${date.getMonth() + 1}` : date.getMonth() + 1;
+// 	const year = date.getFullYear();
+// 	const hours = date.getHours() < 10 ? `0${date.getHours()}` : date.getHours();
+// 	const minutes = date.getMinutes() < 10 ? `0${date.getMinutes()}` : date.getMinutes();
+// 	return `${today}/${month}/${year} - ${hours}:${minutes}`;
+// };
+
 firebase.auth().onAuthStateChanged((userData) => {
 	if (!userData) {
 		if (developmentEnvironment) window.location.href = "/accounts/login.html";
@@ -88,12 +100,19 @@ firebase.auth().onAuthStateChanged((userData) => {
 	} else {
 		const database = firebase.database();
 		const warehouse = database.ref(`/warehouses/${userData.uid}`);
+		// const logs = database.ref(`/logs/${userData.uid}`);
 
 		getWarehouseItems(warehouse, "inventory");
 
 		inventoryBtn.addEventListener("click", () => getWarehouseItems(warehouse, "inventory"));
 		deliveryBtn.addEventListener("click", () => getWarehouseItems(warehouse, "delivery"));
 		deliveredBtn.addEventListener("click", () => getWarehouseItems(warehouse, "delivered"));
+
+		// const importBtn = document.querySelector("#importBtn");
+		// const importConfirmBtn = document.querySelector("#importConfirmBtn");
+		// const time = getTime();
+
+		// importBtn.addEventListener("click", onImportBtnClicked);
 
 		// console.log(warehouseItems);
 		// const warehouse = firebase.database().ref(`/warehouses/${warehouseID}`);

@@ -78,6 +78,7 @@ header.header {
 	&__item:hover {
 		color: $primaryColor;
 		cursor: pointer;
+		text-decoration: none;
 	}
 	&__item.active {
 		color: $primaryColor;
@@ -148,26 +149,42 @@ header.header {
 		font-size: 14px;
 		font-weight: 500;
 	}
+	&__line-break {
+		width: 40px;
+		height: 4px;
+		background-color: $borderColor;
+		margin: 44px 0 40px;
+	}
+	&__import-confirm {
+		margin: 0 -20px;
+	}
+	&__item__title {
+		font-weight: 500;
+	}
+	&__item__sub-title {
+		color: $textColorLight;
+		font-size: 14px;
+	}
 }
 
-.btn {
+.btn-custom {
 	height: 36px;
 	border-radius: 6px;
 	padding: 5px 14px 6px 10px;
 	font-weight: 500;
 	color: #fff;
-	&-primary {
+	&-import {
 		background-color: #6993ff;
 	}
-	&-primary:hover {
+	&-import:hover {
 		background-color: #4a7dff;
 	}
 
-	&-danger {
+	&-export {
 		background-color: #f64e60;
 	}
 
-	&-danger:hover {
+	&-export:hover {
 		background-color: #ee2d41;
 	}
 }
@@ -311,6 +328,11 @@ header.header {
 		border-radius: 50%;
 		animation: spinner 0.8s infinite linear;
 	}
+}
+
+.import-form {
+	margin-top: 28px;
+	margin-bottom: 34px;
 }
 
 @keyframes spinner {

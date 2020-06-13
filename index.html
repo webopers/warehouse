@@ -23,22 +23,22 @@
 					</div>
 				</div>
 				<div class="topbar">
-					<div class="topbar__item active">
+					<a href="/" class="topbar__item active">
 						Kho hàng
-					</div>
-					<div class="topbar__item">
+					</a>
+					<a href="/manager/employees/" class="topbar__item">
 						Nhân viên
-					</div>
-					<div class="topbar__item">
+					</a>
+					<a href="/logs/" class="topbar__item">
 						Nhật ký
-					</div>
+					</a>
 				</div>
 			</div>
 		</header>
 		<div class="paper container">
 			<div class="row">
 				<div class="col-lg-12">
-					<div class="loading d-flex align-items-center justify-content-center d-none">
+					<div class="loading d-flex align-items-center justify-content-center">
 						<div class="loading__spinner"></div>
 					</div>
 					<div class="block">
@@ -54,14 +54,84 @@
 								</div>
 							</div>
 							<div class="block__action">
-								<button class="btn btn-sm btn-primary mr-3">
+								<a href="/manager/import/" class="btn btn-custom btn-sm btn-primary mr-3 btn-import" id="importBtn">
 									<i class="far fa-sign-in-alt pr-2 pl-1"></i>
 									Import
-								</button>
-								<button class="btn btn-sm btn-danger" title="Select at least 1 item for export">
+								</a>
+								<button class="btn btn-custom btn-sm btn-danger btn-export" title="Select at least 1 item for export">
 									<i class="fal fa-sign-out-alt pr-2 pl-1"></i>
 									Export
 								</button>
+							</div>
+						</div>
+						<div class="import-form d-none" id="importForm">
+							<div class="container p-0">
+								<div class="row">
+									<div class="col-3">
+										<input type="text" class="form-control" id="warehouseItemName" placeholder="Tên hàng" />
+									</div>
+									<div class="col-2">
+										<select name="" id="warehouseItemCategories" class="form-control">
+											<!-- <option value=""></option> -->
+										</select>
+									</div>
+									<div class="col-2">
+										<input type="number" class="form-control" id="warehouseItemWeight" placeholder="Khối lượng" />
+									</div>
+									<div class="col-2">
+										<input type="date" class="form-control" id="warehouseItemDeadline" placeholder="Thời gian giao hàng" />
+									</div>
+									<div class="col-3">
+										<input type="money" class="form-control" id="warehouseItemMoney" placeholder="Số tiền thu hộ" />
+									</div>
+								</div>
+								<div class="row mt-3">
+									<div class="col-3">
+										<input type="text" class="form-control" id="warehouseItemStreet" placeholder="Địa chỉ" />
+									</div>
+									<div class="col-3">
+										<input type="text" class="form-control" id="warehouseItemWard" placeholder="Phường" />
+									</div>
+									<div class="col-3">
+										<select name="" id="warehouseItemDistrict" class="form-control">
+											<option value="1">Quận 1</option>
+											<option value="2">Quận 2</option>
+											<option value="3">Quận 3</option>
+											<option value="4">Quận 4</option>
+											<option value="5">Quận 5</option>
+											<option value="6">Quận 6</option>
+											<option value="7">Quận 7</option>
+											<option value="8">Quận 8</option>
+											<option value="9">Quận 9</option>
+											<option value="10">Quận 10</option>
+											<option value="11">Quận 11</option>
+											<option value="12">Quận 12</option>
+											<option value="Bình Tân">Quận Bình Tân</option>
+											<option value="Bình Thạnh">Quận Bình Thạnh</option>
+											<option value="Tân Bình">Quận Tân Bình</option>
+											<option value="Tân Phú">Quận Tân Phú</option>
+											<option value="Gò Vấp">Quận Gò Vấp</option>
+											<option value="Phú Nhuận">Quận Phú Nhuận</option>
+											<option value="Thủ Đức">Quận Thủ Đức</option>
+										</select>
+									</div>
+									<div class="col-3">
+										<input
+											type="text"
+											class="form-control"
+											disabled
+											id="warehouseItemCity"
+											placeholder="Thành phố"
+											value="Hồ Chí Minh"
+										/>
+									</div>
+								</div>
+							</div>
+							<div class="row mt-3">
+								<div class="col-3 d-flex">
+									<button class="btn btn-primary btn-block" id="importConfirmBtn">Confirm</button>
+									<!-- <button class="btn btn-danger ml-3">Random</button> -->
+								</div>
 							</div>
 						</div>
 						<table class="table table-borderless">
@@ -69,10 +139,10 @@
 								<tr>
 									<th>Mã hàng</th>
 									<th>Tên hàng</th>
+									<th>Danh mục</th>
 									<th>Khối lượng</th>
 									<th>Thời gian nhập kho</th>
-									<th>Thời gian giao hàng</th>
-									<th>Địa chỉ nhận hàng</th>
+									<th>Giao hàng</th>
 								</tr>
 							</thead>
 							<tbody class="warehouseItemsContainer"></tbody>
