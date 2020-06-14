@@ -24,10 +24,20 @@ const doUpdate = (fullName) => {
 	user
 		.updateProfile({
 			displayName: fullName,
-			position: "manager",
 		})
-		.then(function () {
-			location.href = "/";
+		.then(() => {
+			firebase
+				.database()
+				.ref(`users/${user.uid}`)
+				.once("value")
+				.then((userData) => {
+					const { position: userPosition } = userData.val();
+					if (userPosition !== "manager") {
+						window.location.href = "/shipper/";
+					} else {
+						window.location.href = "/";
+					}
+				});
 		})
 		.catch(function (error) {
 			showError(

@@ -7,7 +7,7 @@ const deliveryBtn = document.querySelector(".delivery");
 const deliveredBtn = document.querySelector(".delivered");
 
 const checkUserPosition = (userPosition) => {
-	if (userPosition !== "manager") {
+	if (userPosition === "shipper") {
 		window.location.href = "/shipper/";
 	}
 };
@@ -36,7 +36,7 @@ const render = (items, filter) => {
 			if (item.status === filter) {
 				itemElements = `
 				<tr id="${itemID}">
-					<td class="d-flex" style="max-width: 540px;">
+					<td class="d-flex align-items-center" style="max-width: 540px;">
 						<div class="checkbox-container">
 							<input type="checkbox" name="select" class="checkbox-mark" />
 							<div class="checkbox-face">

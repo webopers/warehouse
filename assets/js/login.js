@@ -1,12 +1,27 @@
 import firebase from "./firebase-config.js";
 
+const domain = window.location.href.split("/")[2];
+
 const checkLoginStatus = () => {
-	firebase.auth().onAuthStateChanged(function (user) {
+	firebase.auth().onAuthStateChanged((user) => {
 		if (user) {
-			if (user.displayName === null)
-				if (domain === "todos.webopers.com") location.href = "/information/";
-				else location.href = "/accounts/information.html";
-			else location.href = "/";
+			if (user.displayName === null) {
+				if (domain === "todos.webopers.com") window.location.href = "/information/";
+				else window.location.href = "/accounts/information.html";
+			} else {
+				firebase
+					.database()
+					.ref(`users/${user.uid}`)
+					.once("value")
+					.then((userData) => {
+						const { position: userPosition } = userData.val();
+						if (userPosition === "manager") {
+							window.location.href = "/";
+						} else {
+							window.location.href = "/shipper/";
+						}
+					});
+			}
 		}
 	});
 };
@@ -14,8 +29,10 @@ const checkLoginStatus = () => {
 const isValidEmail = (email) => {
 	const atPosition = email.indexOf("@");
 	const dotPosition = email.lastIndexOf(".");
-	if (atPosition < 1 || dotPosition < atPosition + 2 || dotPosition + 2 >= email.length) return false;
-	else return true;
+	if (atPosition < 1 || dotPosition < atPosition + 2 || dotPosition + 2 >= email.length) {
+		return false;
+	}
+	return true;
 };
 
 const onLoginBtnClicked = () => {
@@ -109,7 +126,5 @@ loginBtn.addEventListener("click", onLoginBtnClicked);
 document.addEventListener("keypress", () => (event.keyCode === 13 ? onLoginBtnClicked() : ""));
 createBtn.addEventListener("click", onCreateBtnClicked);
 showPasswordBtn.addEventListener("click", onShowPasswordBtnClicked);
-
-const domain = window.location.href.split("/")[2];
 
 checkLoginStatus();

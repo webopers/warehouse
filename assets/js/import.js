@@ -79,7 +79,7 @@ firebase.auth().onAuthStateChanged((user) => {
 				const administrative = database.ref("administrative/");
 				const logs = database.ref(`logs/${warehouseID}`);
 				const categories = database.ref(`detail/${warehouseID}/categories`);
-				const updated = database.ref(`detail/${warehouseID}/updated`);
+				const updated = database.ref(`detail/${warehouseID}`);
 
 				getData(categories, handlingCategories);
 				getData(administrative.child("Hồ Chí Minh"), handlingAdministrative);
