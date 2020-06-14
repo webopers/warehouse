@@ -1,4 +1,5 @@
 const renderOptions = (options, selectID, prefix = "") => {
+	const loadingNode = document.querySelector(".loading");
 	const categoriesNode = document.querySelector(`#${selectID}`);
 	const { length } = categoriesNode.options;
 	for (let i = length - 1; i >= 0; i -= 1) {
@@ -10,5 +11,7 @@ const renderOptions = (options, selectID, prefix = "") => {
 		optionElement.value = optionID;
 		categoriesNode.add(optionElement);
 	});
+	loadingNode.classList.add("d-none");
+	loadingNode.classList.remove("d-flex");
 };
 export default renderOptions;
