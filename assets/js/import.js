@@ -102,7 +102,9 @@ firebase.auth().onAuthStateChanged((user) => {
 				receiverDistrict.addEventListener("change", () => onDistrictChanged(receiverDistrict.value));
 				importBtn.addEventListener("click", () => onImportClicked(getTime()));
 				randomBtn.addEventListener("click", () => onRandomClicked(getTime(), administrativeData));
-				confirmImportBtn.addEventListener("click", () => onConfirmImportClicked(warehouse, logs, updated, getTime()));
+				confirmImportBtn.addEventListener("click", () =>
+					onConfirmImportClicked(warehouse, logs, updated, user.displayName, getTime())
+				);
 			});
 	}
 });

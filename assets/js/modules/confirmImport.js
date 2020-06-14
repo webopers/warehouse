@@ -1,4 +1,4 @@
-const onConfirmImportClicked = (warehouse, logs, updated, time) => {
+const onConfirmImportClicked = (warehouse, logs, updated, name, time) => {
 	const warehouseItems = !localStorage.getItem("warehouseItems") ? {} : JSON.parse(localStorage.getItem("warehouseItems"));
 	Object.keys(warehouseItems).forEach((itemID) => {
 		warehouse.push(warehouseItems[itemID]);
@@ -6,6 +6,7 @@ const onConfirmImportClicked = (warehouse, logs, updated, time) => {
 			action: "import",
 			time,
 			content: warehouseItems[itemID].item.name,
+			name,
 		});
 	});
 	localStorage.clear();
