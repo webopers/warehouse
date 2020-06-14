@@ -6,17 +6,11 @@ const inventoryBtn = document.querySelector(".inventory");
 const deliveryBtn = document.querySelector(".delivery");
 const deliveredBtn = document.querySelector(".delivered");
 
-// const checkUserPosition = (userID) => {
-// 	database
-// 		.ref(`users/${userID}`)
-// 		.once("value")
-// 		.then((snapshot) => {
-// 			if (snapshot.val().position === "shipper") {
-// 				if (developmentEnvironment) window.location.href = "/shipper.html";
-// 				else window.location.href = "/shipper/";
-// 			}
-// 		});
-// };
+const checkUserPosition = (userPosition) => {
+	if (userPosition !== "manager") {
+		window.location.href = "/shipper/";
+	}
+};
 
 const highlightStatusBtn = (filter) => {
 	inventoryBtn.classList.remove("active");
@@ -86,33 +80,27 @@ const getWarehouseItems = (warehouse, filter) => {
 	});
 };
 
-firebase.auth().onAuthStateChanged((userData) => {
-	if (!userData) {
+firebase.auth().onAuthStateChanged((user) => {
+	if (!user) {
 		if (developmentEnvironment) window.location.href = "/accounts/login.html";
 		else window.location.href = "/login/";
 	} else {
-		const database = firebase.database();
-		const warehouse = database.ref(`/warehouses/${userData.uid}`);
-		// const logs = database.ref(`/logs/${userData.uid}`);
+		firebase
+			.database()
+			.ref(`/users/${user.uid}`)
+			.once("value")
+			.then((dataSnapshot) => {
+				const database = firebase.database();
+				const { position: userPosition, warehouse: warehouseID } = dataSnapshot.val();
+				const warehouse = database.ref(`/warehouses/${warehouseID}`);
 
-		getWarehouseItems(warehouse, "inventory");
+				checkUserPosition(userPosition);
 
-		inventoryBtn.addEventListener("click", () => getWarehouseItems(warehouse, "inventory"));
-		deliveryBtn.addEventListener("click", () => getWarehouseItems(warehouse, "delivery"));
-		deliveredBtn.addEventListener("click", () => getWarehouseItems(warehouse, "delivered"));
+				getWarehouseItems(warehouse, "inventory");
 
-		// const importBtn = document.querySelector("#importBtn");
-		// const importConfirmBtn = document.querySelector("#importConfirmBtn");
-		// const time = getTime();
-
-		// importBtn.addEventListener("click", onImportBtnClicked);
-
-		// console.log(warehouseItems);
-		// const warehouse = firebase.database().ref(`/warehouses/${warehouseID}`);
-		// warehouses.on("value", (dataSnapshot) => {
-		// 	console.log(dataSnapshot.val());
-		// });
-		// const warehouseKey = warehouse.push().key;
-		// console.log(warehouseKey);
+				inventoryBtn.addEventListener("click", () => getWarehouseItems(warehouse, "inventory"));
+				deliveryBtn.addEventListener("click", () => getWarehouseItems(warehouse, "delivery"));
+				deliveredBtn.addEventListener("click", () => getWarehouseItems(warehouse, "delivered"));
+			});
 	}
 });

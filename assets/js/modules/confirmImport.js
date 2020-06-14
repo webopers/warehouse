@@ -1,4 +1,4 @@
-const onConfirmImportClicked = (warehouse, logs, time) => {
+const onConfirmImportClicked = (warehouse, logs, updated, time) => {
 	const warehouseItems = !localStorage.getItem("warehouseItems") ? {} : JSON.parse(localStorage.getItem("warehouseItems"));
 	Object.keys(warehouseItems).forEach((itemID) => {
 		warehouse.push(warehouseItems[itemID]);
@@ -9,6 +9,7 @@ const onConfirmImportClicked = (warehouse, logs, time) => {
 		});
 	});
 	localStorage.clear();
+	updated.set(time);
 	window.location.href = "/";
 };
 

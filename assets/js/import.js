@@ -60,37 +60,49 @@ const getTime = () => {
 	return `${today}/${month}/${year} - ${hours}:${minutes}`;
 };
 
-firebase.auth().onAuthStateChanged((userData) => {
-	if (!userData) {
+firebase.auth().onAuthStateChanged((user) => {
+	if (!user) {
 		if (developmentEnvironment) window.location.href = "/accounts/login.html";
 		else window.location.href = "/login/";
 	} else {
-		const database = firebase.database();
-		const warehouses = database.ref(`warehouses/${userData.uid}`);
-		const administrative = database.ref("administrative/");
-		const logs = database.ref(`logs/${userData.uid}`);
+		firebase
+			.database()
+			.ref(`/users/${user.uid}`)
+			.once("value")
+			.then((dataSnapshot) => {
+				const database = firebase.database();
+				const { position: userPosition, warehouse: warehouseID } = dataSnapshot.val();
 
-		getData(warehouses.child("categories"), handlingCategories);
-		getData(administrative.child("Hồ Chí Minh"), handlingAdministrative);
+				if (userPosition !== "manager") window.location.href = "/shipper/";
 
-		if (localStorage.getItem("warehouseItems")) renderList(JSON.parse(localStorage.getItem("warehouseItems")));
+				const warehouse = database.ref(`/warehouses/${warehouseID}`);
+				const administrative = database.ref("administrative/");
+				const logs = database.ref(`logs/${warehouseID}`);
+				const categories = database.ref(`detail/${warehouseID}/categories`);
+				const updated = database.ref(`detail/${warehouseID}/updated`);
 
-		const addCategoryBtn = document.querySelector("#addCategoryBtn");
-		const closeAddCategoryBtn = document.querySelector("#closeAddCategoryBtn");
-		const addCategoryInput = document.querySelector("#addCategoryInput");
-		const receiverDistrict = document.querySelector("#receiverDistrict");
-		const importBtn = document.querySelector("#importBtn");
-		const randomBtn = document.querySelector("#randomBtn");
-		const confirmImportBtn = document.querySelector("#confirmImport");
+				getData(categories, handlingCategories);
+				getData(administrative.child("Hồ Chí Minh"), handlingAdministrative);
 
-		addCategoryBtn.addEventListener("click", () => onAddCategoryBtnClicked("show"));
-		closeAddCategoryBtn.addEventListener("click", () => onAddCategoryBtnClicked("hide"));
-		addCategoryInput.addEventListener("keypress", (event) => {
-			if (event.keyCode === 13) addCategory(warehouses, addCategoryInput);
-		});
-		receiverDistrict.addEventListener("change", () => onDistrictChanged(receiverDistrict.value));
-		importBtn.addEventListener("click", () => onImportClicked(getTime()));
-		randomBtn.addEventListener("click", () => onRandomClicked(getTime(), administrativeData));
-		confirmImportBtn.addEventListener("click", () => onConfirmImportClicked(warehouses, logs, getTime()));
+				if (localStorage.getItem("warehouseItems")) renderList(JSON.parse(localStorage.getItem("warehouseItems")));
+
+				const addCategoryBtn = document.querySelector("#addCategoryBtn");
+				const closeAddCategoryBtn = document.querySelector("#closeAddCategoryBtn");
+				const addCategoryInput = document.querySelector("#addCategoryInput");
+				const receiverDistrict = document.querySelector("#receiverDistrict");
+				const importBtn = document.querySelector("#importBtn");
+				const randomBtn = document.querySelector("#randomBtn");
+				const confirmImportBtn = document.querySelector("#confirmImport");
+
+				addCategoryBtn.addEventListener("click", () => onAddCategoryBtnClicked("show"));
+				closeAddCategoryBtn.addEventListener("click", () => onAddCategoryBtnClicked("hide"));
+				addCategoryInput.addEventListener("keypress", (event) => {
+					if (event.keyCode === 13) addCategory(warehouse, addCategoryInput);
+				});
+				receiverDistrict.addEventListener("change", () => onDistrictChanged(receiverDistrict.value));
+				importBtn.addEventListener("click", () => onImportClicked(getTime()));
+				randomBtn.addEventListener("click", () => onRandomClicked(getTime(), administrativeData));
+				confirmImportBtn.addEventListener("click", () => onConfirmImportClicked(warehouse, logs, updated, getTime()));
+			});
 	}
 });
