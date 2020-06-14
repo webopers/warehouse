@@ -79,7 +79,7 @@ firebase.auth().onAuthStateChanged((user) => {
 				const administrative = database.ref("administrative/");
 				const logs = database.ref(`logs/${warehouseID}`);
 				const categories = database.ref(`detail/${warehouseID}/categories`);
-				const updated = database.ref(`detail/${warehouseID}`);
+				const detail = database.ref(`detail/${warehouseID}`);
 
 				getData(categories, handlingCategories);
 				getData(administrative.child("Hồ Chí Minh"), handlingAdministrative);
@@ -97,13 +97,13 @@ firebase.auth().onAuthStateChanged((user) => {
 				addCategoryBtn.addEventListener("click", () => onAddCategoryBtnClicked("show"));
 				closeAddCategoryBtn.addEventListener("click", () => onAddCategoryBtnClicked("hide"));
 				addCategoryInput.addEventListener("keypress", (event) => {
-					if (event.keyCode === 13) addCategory(warehouse, addCategoryInput);
+					if (event.keyCode === 13) addCategory(detail, addCategoryInput);
 				});
 				receiverDistrict.addEventListener("change", () => onDistrictChanged(receiverDistrict.value));
 				importBtn.addEventListener("click", () => onImportClicked(getTime()));
 				randomBtn.addEventListener("click", () => onRandomClicked(getTime(), administrativeData));
 				confirmImportBtn.addEventListener("click", () =>
-					onConfirmImportClicked(warehouse, logs, updated, user.displayName, getTime())
+					onConfirmImportClicked(warehouse, logs, detail, user.displayName, getTime())
 				);
 			});
 	}
