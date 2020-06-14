@@ -123,32 +123,54 @@ const getTime = () => {
 	return `${today}/${month}/${year} - ${hours}:${minutes}`;
 };
 
-const renderEmployeeList = (employees) => {
+const onDeleteStaffBtnClicked = (element, employees, detail, logs, employeeID, district, city, name) => {
+	employees.child(employeeID).remove();
+	detail.child("userUpdated").set(getTime());
+	detail.child("logUpdated").set(getTime());
+	logs.push({
+		action: "remove shipper",
+		content: `Người vận chuyển hoạt động tại Quận ${district}, ${city}`,
+		name,
+		time: getTime(),
+	});
+	console.log(element);
+};
+
+const renderEmployeeList = (employees, employee, detail, logs, authName) => {
 	const container = document.querySelector("#employeesContainer");
+	while (container.firstChild) container.removeChild(container.firstChild);
 	Object.keys(employees).forEach((employeeID) => {
 		const { name, activeArea } = employees[employeeID];
 		const employeeElement = document.createElement("tr");
+		const nameColumn = document.createElement("td");
+		const areaColumn = document.createElement("td");
+		const incomeColumn = document.createElement("td");
+		const orderShipped = document.createElement("td");
+		const actionColumn = document.createElement("td");
 		const deleteEmployeeBtn = document.createElement("button");
 		deleteEmployeeBtn.className = "btn btn-custom btn-sm btn-danger btn-export";
 		deleteEmployeeBtn.innerHTML = '<i class="fal fa-user-times pr-2 pl-1"></i> Xoá';
-		employeeElement.innerHTML = `
-      <td>${name}</td>
-      <td>Quận ${activeArea.district}, ${activeArea.city}</td>
-      <td>12000000</td>
-      <td>20</td>
-      <td class="d-flex justify-content-end" style="margin-right: -11px;">
-        <button class="btn btn-custom btn-sm btn-danger btn-export" title="Select at least 1 item for export">
-          <i class="fal fa-user-times pr-2 pl-1"></i>
-          Xoá
-        </button>
-      </td>
-    `;
+		deleteEmployeeBtn.addEventListener("click", () =>
+			onDeleteStaffBtnClicked(employeeElement, employee, detail, logs, employeeID, activeArea.district, activeArea.city, authName)
+		);
+		nameColumn.innerText = name;
+		areaColumn.innerText = `Quận ${activeArea.district}, ${activeArea.city}`;
+		incomeColumn.innerText = `20000000`;
+		orderShipped.innerText = `12`;
+		actionColumn.className = "d-flex justify-content-end";
+		actionColumn.style.margin = "0 -11px 0 0";
+		employeeElement.appendChild(nameColumn);
+		employeeElement.appendChild(areaColumn);
+		employeeElement.appendChild(incomeColumn);
+		employeeElement.appendChild(orderShipped);
+		actionColumn.appendChild(deleteEmployeeBtn);
+		employeeElement.appendChild(actionColumn);
 		container.prepend(employeeElement);
 	});
 	const spaceRow = document.createElement("tr");
 	spaceRow.style.height = "28px";
 	container.prepend(spaceRow);
-	document.querySelector(".loading").className("loading d-none align-items-center justify-content-center");
+	document.querySelector(".loading").className = "loading d-none align-items-center justify-content-center";
 };
 
 firebase.auth().onAuthStateChanged((user) => {
@@ -169,7 +191,7 @@ firebase.auth().onAuthStateChanged((user) => {
 				const detail = database.ref(`/detail/${warehouseID}`);
 				const logs = database.ref(`/logs/${warehouseID}`);
 
-				employee.on("value", (employeeData) => renderEmployeeList(employeeData.val()));
+				employee.on("value", (employeeData) => renderEmployeeList(employeeData.val(), employee, detail, logs, user.displayName));
 				detail.on("value", (detailData) => {
 					const updatedTimeNode = document.querySelector("#updatedTime");
 					updatedTimeNode.innerText = detailData.val().userUpdated;

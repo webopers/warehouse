@@ -15,6 +15,7 @@ const render = (logs) => {
 		const rowElement = document.createElement("tr");
 		if (action === "import") action = "Nhập hàng";
 		else if (action === "create shipper") action = "Thêm nhân viên";
+		else if (action === "remove shipper") action = "Xoá nhân viên";
 		rowElement.innerHTML = `
       <td>${name}</td>
       <td>${action}</td>
@@ -49,7 +50,7 @@ firebase.auth().onAuthStateChanged((user) => {
 				const database = firebase.database();
 				const { warehouse: warehouseID } = dataSnapshot.val();
 				const logs = database.ref(`/logs/${warehouseID}`);
-				const updated = database.ref(`/detail/${warehouseID}/updated`);
+				const updated = database.ref(`/detail/${warehouseID}/logUpdated`);
 
 				getLogsItem(logs);
 

@@ -64,33 +64,7 @@
 									<th></th>
 								</tr>
 							</thead>
-							<tbody id="employeesContainer">
-								<tr style="height: 24px;"></tr>
-								<!-- <tr>
-									<td>Nguyễn Khắc Khánh</td>
-									<td>Quận 12, Hồ Chí Minh</td>
-									<td>12000000</td>
-									<td>20</td>
-									<td class="d-flex justify-content-end" style="margin-right: -11px;">
-										<button class="btn btn-custom btn-sm btn-danger btn-export" title="Select at least 1 item for export">
-											<i class="fal fa-user-times pr-2 pl-1"></i>
-											Xoá
-										</button>
-									</td>
-								</tr>
-								<tr>
-									<td>Nguyễn Khắc Khánh</td>
-									<td>Quận 12, Hồ Chí Minh</td>
-									<td>12000000</td>
-									<td>20</td>
-									<td class="d-flex justify-content-end" style="margin-right: -11px;">
-										<button class="btn btn-custom btn-sm btn-danger btn-export" title="Select at least 1 item for export">
-											<i class="fal fa-user-times pr-2 pl-1"></i>
-											Xoá
-										</button>
-									</td>
-								</tr> -->
-							</tbody>
+							<tbody id="employeesContainer"></tbody>
 						</table>
 						<div class="table-empty d-none">
 							<img src="/assets/images/empty-tray.svg" alt="List is empty" />
@@ -149,6 +123,25 @@
 				</div>
 			</div>
 		</div>
+		<!-- <div class="popup" id="confirmRemoveStaffContainer">
+			<div class="popup__background d-flex align-items-center justify-content-center">
+				<div class="popup__block block p-5">
+					<div class="block__header">
+						<div class="block__heading">
+							Bạn có chắc muốn xoá nhân viên này?
+						</div>
+					</div>
+					<div class="row mt-4 mb-1 pt-4">
+						<div class="col-4">
+							<button class="btn btn-block btn-light" id="closeAddStaffFormBtn">Không</button>
+						</div>
+						<div class="col-8">
+							<button class="btn btn-block btn-danger" id="addStaffFormBtn">Xoá nhân viên</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div> -->
 		<script defer src="https://www.gstatic.com/firebasejs/7.15.0/firebase-app.js"></script>
 		<script defer src="https://www.gstatic.com/firebasejs/7.15.0/firebase-database.js"></script>
 		<script defer src="https://www.gstatic.com/firebasejs/7.15.0/firebase-auth.js"></script>
