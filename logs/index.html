@@ -9,27 +9,27 @@
 		<link rel="stylesheet" href="/assets/css/base.min.css?version=1.0.1" />
 		<link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
 		<link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.12.0/css/all.css" />
-		<title>Warehouse Manager</title>
+		<title>Logs - Warehouse Manager</title>
 	</head>
 	<body>
 		<header class="header">
 			<div class="container d-flex justify-content-between align-items-center">
-				<div class="brand">
+				<a href="/" class="brand">
 					<div class="brand__fancy">
 						<div class="brand__background"></div>
 					</div>
 					<div class="brand__text">
 						Group 8
 					</div>
-				</div>
+				</a>
 				<div class="topbar">
-					<a href="/" class="topbar__item active">
+					<a href="/" class="topbar__item">
 						Kho hàng
 					</a>
 					<a href="/manager/employees/" class="topbar__item">
 						Nhân viên
 					</a>
-					<a href="/logs/" class="topbar__item">
+					<a href="/logs/" class="topbar__item active">
 						Nhật ký
 					</a>
 				</div>
@@ -44,35 +44,20 @@
 					<div class="block">
 						<div class="block__header">
 							<div class="block__heading">
-								Warehouse
-								<i class="far fa-angle-right"></i>
-								<span class="tab active inventory">Trong kho (0)</span>
-								<span class="tab delivery">Đang giao (0)</span>
-								<span class="tab delivered">Đã giao (0)</span>
+								Nhật ký hoạt động
 								<div class="block__sub-heading">Cập nhật lần cuối: <span id="updatedTime"></span></div>
-							</div>
-							<div class="block__action">
-								<a href="/manager/import/" class="btn btn-custom btn-sm btn-primary mr-3 btn-import" id="importBtn">
-									<i class="far fa-sign-in-alt pr-2 pl-1"></i>
-									Import
-								</a>
-								<button class="btn btn-custom btn-sm btn-danger btn-export" title="Select at least 1 item for export">
-									<i class="fal fa-sign-out-alt pr-2 pl-1"></i>
-									Export
-								</button>
 							</div>
 						</div>
 						<table class="table table-borderless">
 							<thead>
 								<tr>
-									<th>Tên hàng</th>
-									<th>Danh mục</th>
-									<th>Khối lượng</th>
-									<th>Giao hàng</th>
-									<th>Khu vực</th>
+									<th>Người thực hiện</th>
+									<th>Hành động</th>
+									<th>Mô tả</th>
+									<th>Thời gian</th>
 								</tr>
 							</thead>
-							<tbody class="warehouseItemsContainer"></tbody>
+							<tbody class="logsItemContainer"></tbody>
 						</table>
 						<div class="table-empty d-none">
 							<img src="/assets/images/empty-tray.svg" alt="List is empty" />
@@ -84,6 +69,6 @@
 		<script defer src="https://www.gstatic.com/firebasejs/7.15.0/firebase-app.js"></script>
 		<script defer src="https://www.gstatic.com/firebasejs/7.15.0/firebase-database.js"></script>
 		<script defer src="https://www.gstatic.com/firebasejs/7.15.0/firebase-auth.js"></script>
-		<script defer type="module" src="/assets/js/index.js"></script>
+		<script defer type="module" src="/assets/js/logs.js"></script>
 	</body>
 </html>

@@ -40,6 +40,10 @@ header.header {
 	}
 }
 
+a:hover {
+	text-decoration: none;
+}
+
 .brand {
 	display: flex;
 	align-items: center;
@@ -327,10 +331,12 @@ header.header {
 }
 
 .loading {
-	position: absolute;
-	z-index: 1000;
-	width: calc(100% - 30px);
-	height: 100%;
+	position: fixed;
+	top: 80px;
+	left: 0;
+	z-index: 999;
+	width: 100%;
+	height: calc(100vh - 80px);
 	background-color: #fff;
 	border-radius: 6px;
 	&__spinner {
