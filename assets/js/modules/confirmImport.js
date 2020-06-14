@@ -10,7 +10,8 @@ const onConfirmImportClicked = (warehouse, logs, updated, name, time) => {
 		});
 	});
 	localStorage.clear();
-	updated.set(time);
+	updated.child("logUpdate").set(time);
+	updated.child("updated").set(time);
 	window.location.href = "/";
 };
 
