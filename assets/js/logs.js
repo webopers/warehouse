@@ -5,12 +5,16 @@ const developmentEnvironment = window.location.href.split("/")[2] !== "warehouse
 const render = (logs) => {
 	const container = document.querySelector(".logsItemContainer");
 	const loadingNode = document.querySelector(".loading");
+	while (container.firstChild) {
+		container.removeChild(container.firstChild);
+	}
 	Object.keys(logs).forEach((logID) => {
 		// eslint-disable-next-line object-curly-newline
 		const { content, name, time } = logs[logID];
 		let { action } = logs[logID];
 		const rowElement = document.createElement("tr");
 		if (action === "import") action = "Nhập hàng";
+		else if (action === "create shipper") action = "Thêm nhân viên";
 		rowElement.innerHTML = `
       <td>${name}</td>
       <td>${action}</td>
