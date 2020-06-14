@@ -93,8 +93,14 @@ firebase.auth().onAuthStateChanged((user) => {
 				const database = firebase.database();
 				const { position: userPosition, warehouse: warehouseID } = dataSnapshot.val();
 				const warehouse = database.ref(`/warehouses/${warehouseID}`);
+				const updated = database.ref(`/detail/${warehouseID}/updated`);
 
 				checkUserPosition(userPosition);
+
+				updated.on("value", (data) => {
+					const updatedTime = data.val();
+					document.querySelector("#updatedTime").innerText = updatedTime;
+				});
 
 				getWarehouseItems(warehouse, "inventory");
 
