@@ -21,6 +21,16 @@ const isValidEmail = (email) => {
 	return true;
 };
 
+const getTime = () => {
+	const date = new Date();
+	const today = date.getDate() < 10 ? `0${date.getDate()}` : date.getDate();
+	const month = date.getMonth() < 10 ? `0${date.getMonth() + 1}` : date.getMonth() + 1;
+	const year = date.getFullYear();
+	const hours = date.getHours() < 10 ? `0${date.getHours()}` : date.getHours();
+	const minutes = date.getMinutes() < 10 ? `0${date.getMinutes()}` : date.getMinutes();
+	return `${today}/${month}/${year} - ${hours}:${minutes}`;
+};
+
 const showAddStaffForm = () => {
 	const addStaffForm = document.querySelector("#addStaffForm");
 	addStaffForm.classList.remove("d-none");
@@ -36,7 +46,11 @@ const handlingAdministrative = (data) => {
 	renderOptions(Object.keys(administrativeData), "staffDistrictActivity", "Quận");
 };
 
-const registerNewStuff = (email, password, name, district, city, employee, users, detail, logs, warehouseID, authName, time) => {
+const registerNewStuff = (staffData, warehouses, users, warehouseID, author) => {
+	const { email, password, name, district, city } = staffData;
+	const employees = warehouses.child("employees");
+	const logs = warehouses.child("logs");
+	const time = getTime();
 	firebaseSecondary
 		.auth()
 		.createUserWithEmailAndPassword(email, password)
@@ -44,24 +58,26 @@ const registerNewStuff = (email, password, name, district, city, employee, users
 			hideAddStaffForm();
 			const newStaff = firebaseSecondary.auth().currentUser;
 			newStaff.updateProfile({ displayName: name });
-			employee.child(newStaff.uid).set({
+			users.child(newStaff.uid).set({ changePassword: false, position: "shipper", username: "", name, warehouse: warehouseID });
+			employees.child(newStaff.uid).set({
 				activeArea: {
 					city,
 					district,
 				},
-				name,
 				items: [],
+				name,
 			});
-			logs.push({
+			logs.child("detail").push({
 				action: "create shipper",
 				content: `${name} hoạt động tại Quận ${district}, ${city}`,
-				name: authName,
+				author,
 				time,
 			});
-			detail.child("userUpdated").set(time);
-			detail.child("logUpdated").set(time);
+			logs.child("updatedTime").update({
+				log: time,
+				staff: time,
+			});
 			// eslint-disable-next-line object-curly-newline
-			users.child(newStaff.uid).set({ changePassword: false, position: "shipper", username: "", warehouse: warehouseID });
 			firebaseSecondary.auth().signOut();
 		})
 		.catch(() => {
@@ -71,7 +87,7 @@ const registerNewStuff = (email, password, name, district, city, employee, users
 		});
 };
 
-const onAddStaffFormBtnClick = (employee, users, detail, logs, warehouseID, authName, time) => {
+const onAddStaffFormBtnClick = (warehouses, users, warehouseID, author) => {
 	const nameNode = document.querySelector("#staffName");
 	const emailNode = document.querySelector("#staffEmail");
 	const passwordNode = document.querySelector("#staffPassword");
@@ -103,7 +119,8 @@ const onAddStaffFormBtnClick = (employee, users, detail, logs, warehouseID, auth
 		repeatPasswordNode.classList.add("is-invalid");
 	}
 	if (!error) {
-		registerNewStuff(email, password, name, district, city, employee, users, detail, logs, warehouseID, authName, time);
+		const staffData = { email, password, name, district, city };
+		registerNewStuff(staffData, warehouses, users, warehouseID, author);
 	}
 };
 
@@ -113,31 +130,28 @@ const getData = (database, callback) => {
 	});
 };
 
-const getTime = () => {
-	const date = new Date();
-	const today = date.getDate() < 10 ? `0${date.getDate()}` : date.getDate();
-	const month = date.getMonth() < 10 ? `0${date.getMonth() + 1}` : date.getMonth() + 1;
-	const year = date.getFullYear();
-	const hours = date.getHours() < 10 ? `0${date.getHours()}` : date.getHours();
-	const minutes = date.getMinutes() < 10 ? `0${date.getMinutes()}` : date.getMinutes();
-	return `${today}/${month}/${year} - ${hours}:${minutes}`;
-};
-
-const onDeleteStaffBtnClicked = (element, employees, detail, logs, employeeID, district, city, name) => {
+const onDeleteStaffBtnClicked = (element, warehouses, users, employeeID, activityArea, author) => {
+	const logs = warehouses.child("logs");
+	const employees = warehouses.child("employees");
+	const time = getTime();
 	employees.child(employeeID).remove();
-	detail.child("userUpdated").set(getTime());
-	detail.child("logUpdated").set(getTime());
-	logs.push({
-		action: "remove shipper",
-		content: `Người vận chuyển hoạt động tại Quận ${district}, ${city}`,
-		name,
-		time: getTime(),
+	users.child(employeeID).remove();
+	logs.child("updatedTime").update({
+		staff: time,
+		logs: time,
 	});
-	console.log(element);
+	logs.child("detail").push({
+		action: "remove shipper",
+		content: `Người vận chuyển hoạt động tại Quận ${activityArea.district}, ${activityArea.city}`,
+		author,
+		time,
+	});
+	document.querySelector("#employeesContainer").removeChild(element);
 };
 
-const renderEmployeeList = (employees, employee, detail, logs, authName) => {
+const renderEmployeeList = async (employees, warehouses, users, author) => {
 	const container = document.querySelector("#employeesContainer");
+
 	while (container.firstChild) container.removeChild(container.firstChild);
 	Object.keys(employees).forEach((employeeID) => {
 		const { name, activeArea } = employees[employeeID];
@@ -150,9 +164,9 @@ const renderEmployeeList = (employees, employee, detail, logs, authName) => {
 		const deleteEmployeeBtn = document.createElement("button");
 		deleteEmployeeBtn.className = "btn btn-custom btn-sm btn-danger btn-export";
 		deleteEmployeeBtn.innerHTML = '<i class="fal fa-user-times pr-2 pl-1"></i> Xoá';
-		deleteEmployeeBtn.addEventListener("click", () =>
-			onDeleteStaffBtnClicked(employeeElement, employee, detail, logs, employeeID, activeArea.district, activeArea.city, authName)
-		);
+		deleteEmployeeBtn.addEventListener("click", () => {
+			onDeleteStaffBtnClicked(employeeElement, warehouses, users, employeeID, activeArea, author);
+		});
 		nameColumn.innerText = name;
 		areaColumn.innerText = `Quận ${activeArea.district}, ${activeArea.city}`;
 		incomeColumn.innerText = `20000000`;
@@ -185,16 +199,16 @@ firebase.auth().onAuthStateChanged((user) => {
 			.then((dataSnapshot) => {
 				const database = firebase.database();
 				const { position: userPosition, warehouse: warehouseID } = dataSnapshot.val();
-				const employee = database.ref(`/employees/${warehouseID}`);
+				const warehouses = database.ref(`/warehouses/${warehouseID}`);
 				const users = database.ref(`/users`);
 				const administrative = database.ref("administrative/");
-				const detail = database.ref(`/detail/${warehouseID}`);
-				const logs = database.ref(`/logs/${warehouseID}`);
 
-				employee.on("value", (employeeData) => renderEmployeeList(employeeData.val(), employee, detail, logs, user.displayName));
-				detail.on("value", (detailData) => {
+				warehouses.child("employees").on("value", (employeeData) => {
+					renderEmployeeList(employeeData.val(), warehouses, users, user.uid);
+				});
+				warehouses.child("logs/updatedTime").on("value", (staffUpdatedTime) => {
 					const updatedTimeNode = document.querySelector("#updatedTime");
-					updatedTimeNode.innerText = detailData.val().userUpdated;
+					updatedTimeNode.innerText = staffUpdatedTime.val().staff;
 				});
 
 				getData(administrative.child("Hồ Chí Minh"), handlingAdministrative);
@@ -205,9 +219,9 @@ firebase.auth().onAuthStateChanged((user) => {
 
 				addStaffBtn.addEventListener("click", () => showAddStaffForm());
 				closeAddStaffFormBtn.addEventListener("click", () => hideAddStaffForm());
-				addStaffFormBtn.addEventListener("click", () =>
-					onAddStaffFormBtnClick(employee, users, detail, logs, warehouseID, user.displayName, getTime())
-				);
+				addStaffFormBtn.addEventListener("click", () => {
+					onAddStaffFormBtnClick(warehouses, users, warehouseID, user.uid);
+				});
 
 				checkUserPosition(userPosition);
 			});
