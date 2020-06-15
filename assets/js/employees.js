@@ -46,7 +46,21 @@ const handlingAdministrative = (data) => {
 	renderOptions(Object.keys(administrativeData), "staffDistrictActivity", "Quận");
 };
 
-const registerNewStuff = (staffData, warehouses, users, warehouseID, author) => {
+const disabledInput = (inputsNode, disabled = true) => {
+	const submitBtn = document.querySelector("#addStaffFormBtn");
+	const cancelBtn = document.querySelector("#closeAddStaffFormBtn");
+	const spinnerBorder = document.querySelector(".spinner-border").classList;
+	submitBtn.disabled = disabled;
+	cancelBtn.disabled = disabled;
+	if (disabled) spinnerBorder.remove("d-none");
+	else spinnerBorder.add("d-none");
+	inputsNode.forEach((inputNode) => {
+		const node = inputNode;
+		node.disabled = disabled;
+	});
+};
+
+const registerNewStuff = (staffData, warehouses, users, warehouseID, author, inputsNode) => {
 	const { email, password, name, district, city } = staffData;
 	const employees = warehouses.child("employees");
 	const logs = warehouses.child("logs");
@@ -55,7 +69,6 @@ const registerNewStuff = (staffData, warehouses, users, warehouseID, author) => 
 		.auth()
 		.createUserWithEmailAndPassword(email, password)
 		.then(() => {
-			hideAddStaffForm();
 			const newStaff = firebaseSecondary.auth().currentUser;
 			newStaff.updateProfile({ displayName: name });
 			users.child(newStaff.uid).set({ changePassword: false, position: "shipper", username: "", name, warehouse: warehouseID });
@@ -79,11 +92,14 @@ const registerNewStuff = (staffData, warehouses, users, warehouseID, author) => 
 			});
 			// eslint-disable-next-line object-curly-newline
 			firebaseSecondary.auth().signOut();
+			hideAddStaffForm();
+			disabledInput(inputsNode, false);
 		})
 		.catch(() => {
 			const errorNode = document.querySelector("#addStuffError");
 			errorNode.innerText = "Email đã được sử dụng bởi người khác";
 			errorNode.classList.remove("d-none");
+			disabledInput(inputsNode, false);
 		});
 };
 
@@ -119,8 +135,9 @@ const onAddStaffFormBtnClick = (warehouses, users, warehouseID, author) => {
 		repeatPasswordNode.classList.add("is-invalid");
 	}
 	if (!error) {
+		disabledInput(elementNode);
 		const staffData = { email, password, name, district, city };
-		registerNewStuff(staffData, warehouses, users, warehouseID, author);
+		registerNewStuff(staffData, warehouses, users, warehouseID, author, elementNode);
 	}
 };
 
