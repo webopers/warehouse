@@ -21,30 +21,20 @@ const onContinueBtnClicked = () => {
 const doUpdate = (fullName) => {
 	const user = firebase.auth().currentUser;
 
-	user
-		.updateProfile({
-			displayName: fullName,
-		})
-		.then(() => {
-			firebase
-				.database()
-				.ref(`users/${user.uid}`)
-				.once("value")
-				.then((userData) => {
-					const { position: userPosition } = userData.val();
-					if (userPosition !== "manager") {
-						window.location.href = "/shipper/";
-					} else {
-						window.location.href = "/";
-					}
-				});
-		})
-		.catch(function (error) {
-			showError(
-				"full-name",
-				`There was an error on our side. 
-                We have noted this error and will fix it as soon as possible. Sorry for the inconvenience`
-			);
+	user.updateProfile({
+		displayName: fullName,
+	});
+
+	const users = firebase.database().ref("/users");
+
+	users.child(user.uid).update({ name: fullName });
+	users
+		.child(user.uid)
+		.once("value")
+		.then((dataSnapshot) => {
+			const { position } = dataSnapshot.val();
+			if (position === "shipper") window.location.href = "/shipper/";
+			else window.location.href = "/";
 		});
 };
 

@@ -49,12 +49,11 @@ firebase.auth().onAuthStateChanged((user) => {
 			.then((dataSnapshot) => {
 				const database = firebase.database();
 				const { warehouse: warehouseID } = dataSnapshot.val();
-				const logs = database.ref(`/logs/${warehouseID}`);
-				const updated = database.ref(`/detail/${warehouseID}/logUpdated`);
+				const logs = database.ref(`/warehouses/${warehouseID}/logs`);
 
-				getLogsItem(logs);
+				getLogsItem(logs.child("detail"));
 
-				updated.on("value", (updatedTime) => {
+				logs.child("updatedTime/log").on("value", (updatedTime) => {
 					document.querySelector("#updatedTime").innerText = updatedTime.val();
 				});
 			});

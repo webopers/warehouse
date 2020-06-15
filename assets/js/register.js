@@ -1,11 +1,11 @@
 import firebase from "./firebase-config.js";
 
+const domain = window.location.href.split("/")[2];
+
 const checkLoginStatus = () => {
 	firebase.auth().onAuthStateChanged((user) => {
 		if (user) {
 			if (user.displayName !== null) location.href = "/";
-			else if (domain === "todos.webopers.com") location.href = "/information/";
-			else location.href = "/accounts/information.html";
 		}
 	});
 };
@@ -22,20 +22,72 @@ const onRegisterBtnClicked = () => {
 	const confirmPassword = confirmPasswordInput.value;
 	suppressError();
 	changeInputStatus(true, registerBtn);
-	if (username === "") showError("username", "Email is not allowed to empty");
-	else if (isValidEmail(username) === false) showError("username", "Email is invalid");
-	else if (password === "") showError("password", "Password must be at least 6 character");
-	else if (password !== confirmPassword) showError("confirm-password", "Confirm password does not match");
-	else doRegister(username, password);
+	if (username === "") showError("username", "Tên đăng nhập hoặc Email không được phép để trống");
+	else if (isValidEmail(username) === false) showError("username", "Tên đăng nhập hoặc Email đã tồn tại");
+	else if (password === "") showError("password", "Mật khẩu phải có tối thiểu 6 ký tự");
+	else if (password !== confirmPassword) showError("confirm-password", "Mật khẩu nhập lại không trùng khớp");
+	else {
+		const users = firebase.database().ref("/users");
+		const warehouses = firebase.database().ref("/warehouses");
+		doRegister(users, warehouses, username, password);
+	}
 };
 
-const doRegister = (username, password) => {
+const randomNumber = (min, max) => Math.floor(Math.random() * (max - min)) + min;
+
+const randomString = (length) => {
+	const source = "abcdefghijklmnopqrstuvwsyzABCDEFGHIJKLMNOPQRSTUVWSYZ0123456789";
+	const sourceLength = source.length;
+	let string = "";
+	for (let i = 0; i < length; i += 1) {
+		string += source[randomNumber(0, sourceLength)];
+	}
+	return string;
+};
+
+const getTime = () => {
+	const date = new Date();
+	const today = date.getDate() < 10 ? `0${date.getDate()}` : date.getDate();
+	const month = date.getMonth() < 10 ? `0${date.getMonth() + 1}` : date.getMonth() + 1;
+	const year = date.getFullYear();
+	const hours = date.getHours() < 10 ? `0${date.getHours()}` : date.getHours();
+	const minutes = date.getMinutes() < 10 ? `0${date.getMinutes()}` : date.getMinutes();
+	return `${today}/${month}/${year} - ${hours}:${minutes}`;
+};
+
+const doRegister = (users, warehouses, username, password) => {
 	firebase
 		.auth()
 		.createUserWithEmailAndPassword(username, password)
-		.catch(function (error) {
+		.then(async () => {
+			const newUser = firebase.auth().currentUser;
+			const warehouseID = randomString(28);
+			const time = getTime();
+			await users.child(newUser.uid).set({
+				changePassword: true,
+				position: "manager",
+				username: "",
+				warehouse: warehouseID,
+			});
+			await warehouses.child(warehouseID).set({
+				categories: ["Khác"],
+				employees: {},
+				items: {},
+				logs: {
+					detail: {},
+					updatedTime: {
+						log: time,
+						item: time,
+						staff: time,
+					},
+				},
+			});
+			if (domain === "todos.webopers.com") window.location.href = "/information/";
+			else window.location.href = "/accounts/information.html";
+		})
+		.catch((error) => {
 			const errorCode = error.code;
-			if (errorCode === "auth/email-already-in-use") showError("username", "Email is already taken");
+			if (errorCode === "auth/email-already-in-use") showError("username", "Tên đăng nhập hoặc Email đã được sử dụng");
 		});
 };
 
@@ -43,7 +95,7 @@ const isValidEmail = (email) => {
 	const atPosition = email.indexOf("@");
 	const dotPosition = email.lastIndexOf(".");
 	if (atPosition < 1 || dotPosition < atPosition + 2 || dotPosition + 2 >= email.length) return false;
-	else return true;
+	return true;
 };
 
 const changeInputStatus = (isDisabled, buttonElement) => {
@@ -96,7 +148,5 @@ loginBtn.addEventListener("click", onLoginBtnClicked);
 registerBtn.addEventListener("click", onRegisterBtnClicked);
 document.addEventListener("keypress", () => (event.keyCode === 13 ? onRegisterBtnClicked() : ""));
 showPasswordBtn.addEventListener("click", onShowPasswordBtnClicked);
-
-const domain = window.location.href.split("/")[2];
 
 checkLoginStatus();

@@ -78,10 +78,9 @@ firebase.auth().onAuthStateChanged((user) => {
 				const warehouse = database.ref(`/warehouses/${warehouseID}`);
 				const administrative = database.ref("administrative/");
 				const logs = database.ref(`logs/${warehouseID}`);
-				const categories = database.ref(`detail/${warehouseID}/categories`);
 				const detail = database.ref(`detail/${warehouseID}`);
 
-				getData(categories, handlingCategories);
+				getData(warehouse.child("categories"), handlingCategories);
 				getData(administrative.child("Hồ Chí Minh"), handlingAdministrative);
 
 				if (localStorage.getItem("warehouseItems")) renderList(JSON.parse(localStorage.getItem("warehouseItems")));
@@ -97,14 +96,12 @@ firebase.auth().onAuthStateChanged((user) => {
 				addCategoryBtn.addEventListener("click", () => onAddCategoryBtnClicked("show"));
 				closeAddCategoryBtn.addEventListener("click", () => onAddCategoryBtnClicked("hide"));
 				addCategoryInput.addEventListener("keypress", (event) => {
-					if (event.keyCode === 13) addCategory(detail, addCategoryInput);
+					if (event.keyCode === 13) addCategory(warehouse, addCategoryInput);
 				});
 				receiverDistrict.addEventListener("change", () => onDistrictChanged(receiverDistrict.value));
 				importBtn.addEventListener("click", () => onImportClicked(getTime()));
 				randomBtn.addEventListener("click", () => onRandomClicked(getTime(), administrativeData));
-				confirmImportBtn.addEventListener("click", () =>
-					onConfirmImportClicked(warehouse, logs, detail, user.displayName, getTime())
-				);
+				confirmImportBtn.addEventListener("click", () => onConfirmImportClicked(warehouse, user.uid, getTime()));
 			});
 	}
 });

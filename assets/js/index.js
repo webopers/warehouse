@@ -24,38 +24,40 @@ const highlightStatusBtn = (filter) => {
 const render = (items, filter) => {
 	const countItemStatus = { inventory: 0, delivery: 0, delivered: 0 };
 	let itemElements = "";
-	Object.keys(items).forEach((itemID) => {
-		const { item, receiver } = items[itemID];
-		if (itemID !== "categories") {
-			const exportTime = {
-				year: item.exportDate.slice(0, 4),
-				month: item.exportDate.slice(5, 7),
-				date: item.exportDate.slice(8, 10),
-			};
-			countItemStatus[item.status] += 1;
-			if (item.status === filter) {
-				itemElements = `
-				<tr id="${itemID}">
-					<td class="d-flex align-items-center" style="max-width: 540px;">
-						<div class="checkbox-container">
-							<input type="checkbox" name="select" class="checkbox-mark" />
-							<div class="checkbox-face">
-								<div class="checkbox-check"></div>
+	if (items) {
+		Object.keys(items).forEach((itemID) => {
+			const { item, receiver } = items[itemID];
+			if (itemID !== "categories") {
+				const exportTime = {
+					year: item.exportDate.slice(0, 4),
+					month: item.exportDate.slice(5, 7),
+					date: item.exportDate.slice(8, 10),
+				};
+				countItemStatus[item.status] += 1;
+				if (item.status === filter) {
+					itemElements = `
+					<tr id="${itemID}">
+						<td class="d-flex align-items-center" style="max-width: 540px;">
+							<div class="checkbox-container">
+								<input type="checkbox" name="select" class="checkbox-mark" />
+								<div class="checkbox-face">
+									<div class="checkbox-check"></div>
+								</div>
 							</div>
-						</div>
-						<div>
-							${item.name}
-						</div>
-					</td>
-					<td>${item.category}</td>
-					<td>${item.weight}</td>
-					<td>${exportTime.date}/${exportTime.month}/${exportTime.year}</td>
-					<td>Quận ${receiver.district}, ${receiver.city}</td>
-				</tr>
-				${itemElements}`;
+							<div>
+								${item.name}
+							</div>
+						</td>
+						<td>${item.category}</td>
+						<td>${item.weight}</td>
+						<td>${exportTime.date}/${exportTime.month}/${exportTime.year}</td>
+						<td>Quận ${receiver.district}, ${receiver.city}</td>
+					</tr>
+					${itemElements}`;
+				}
 			}
-		}
-	});
+		});
+	}
 
 	highlightStatusBtn(filter);
 
@@ -93,16 +95,15 @@ firebase.auth().onAuthStateChanged((user) => {
 				const database = firebase.database();
 				const { position: userPosition, warehouse: warehouseID } = dataSnapshot.val();
 				const warehouse = database.ref(`/warehouses/${warehouseID}`);
-				const updated = database.ref(`/detail/${warehouseID}/updated`);
 
 				checkUserPosition(userPosition);
 
-				updated.on("value", (data) => {
+				warehouse.child("logs/updatedTime/item").on("value", (data) => {
 					const updatedTime = data.val();
 					document.querySelector("#updatedTime").innerText = updatedTime;
 				});
 
-				getWarehouseItems(warehouse, "inventory");
+				getWarehouseItems(warehouse.child("items"), "inventory");
 
 				inventoryBtn.addEventListener("click", () => getWarehouseItems(warehouse, "inventory"));
 				deliveryBtn.addEventListener("click", () => getWarehouseItems(warehouse, "delivery"));

@@ -40,9 +40,9 @@ const onLoginBtnClicked = () => {
 	const password = passwordInput.value;
 	suppressError();
 	changeInputStatus(true, loginBtn);
-	if (username === "") showError("username", "Username or email is not allowed to empty");
-	else if (password === "") showError("password", "Password must be at least 6 character");
-	else if (isValidEmail(username) === false) showError("username", "Username or email does not exist");
+	if (username === "") showError("username", "Tên đăng nhập hoặc Email không được phép để trống");
+	else if (password === "") showError("password", "Mật khẩu phải có tối thiểu 6 ký tự");
+	else if (isValidEmail(username) === false) showError("username", "Tên đăng nhập hoặc Email không tồn tại");
 	else doLogin(username, password);
 };
 
@@ -80,8 +80,8 @@ const doLogin = (username, password) => {
 		.signInWithEmailAndPassword(username, password)
 		.catch(function (error) {
 			const errorCode = error.code;
-			if (errorCode === "auth/user-not-found") showError("username", "Username is password does not exist");
-			else if (errorCode === "auth/wrong-password") showError("password", "Password is incorrect");
+			if (errorCode === "auth/user-not-found") showError("username", "Tên đăng nhập hoặc Email không tồn tại");
+			else if (errorCode === "auth/wrong-password") showError("password", "Mật khẩu không chính xác");
 		});
 };
 
