@@ -215,6 +215,7 @@ firebase.auth().onAuthStateChanged((user) => {
 
 				const warehouse = database.ref(`/warehouses/${warehouseID}`);
 				const exportBtn = document.querySelector("#exportBtn");
+				const closeExportItemsError = document.querySelector("#closeExportItemsError");
 
 				warehouse.child("logs/updatedTime/item").on("value", (data) => {
 					const updatedTime = data.val();
@@ -227,6 +228,9 @@ firebase.auth().onAuthStateChanged((user) => {
 				deliveryBtn.addEventListener("click", () => getWarehouseItems(warehouse.child("items"), "delivery"));
 				deliveredBtn.addEventListener("click", () => getWarehouseItems(warehouse.child("items"), "delivered"));
 				exportBtn.addEventListener("click", () => onExportBtnClicked(warehouse, user.uid));
+				closeExportItemsError.addEventListener("click", () => {
+					document.querySelector("#exportItemsError").classList.add("d-none");
+				});
 			});
 	}
 });
