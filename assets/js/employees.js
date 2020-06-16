@@ -155,7 +155,7 @@ const onDeleteStaffBtnClicked = (element, warehouses, users, employeeID, activit
 	users.child(employeeID).remove();
 	logs.child("updatedTime").update({
 		staff: time,
-		logs: time,
+		log: time,
 	});
 	logs.child("detail").push({
 		action: "remove shipper",
