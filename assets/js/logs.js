@@ -19,6 +19,7 @@ const render = (logs) => {
 			if (action === "import") action = "Nhập hàng";
 			else if (action === "create shipper") action = "Thêm nhân viên";
 			else if (action === "remove shipper") action = "Xoá nhân viên";
+			else if (action === "export") action = "Xuất hàng";
 			rowElement.innerHTML = `
 				<td>${usersData[author].name}</td>
 				<td>${action}</td>

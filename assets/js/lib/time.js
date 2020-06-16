@@ -8,4 +8,6 @@ const getTime = () => {
 	return `${today}/${month}/${year} - ${hours}:${minutes}`;
 };
 
-export default { getTime };
+const formatTime = "";
+
+export { getTime, formatTime };
