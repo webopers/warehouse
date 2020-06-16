@@ -79,6 +79,7 @@ const registerNewStuff = (staffData, warehouses, users, warehouseID, author, inp
 				},
 				items: [],
 				name,
+				salary: 0,
 			});
 			logs.child("detail").push({
 				action: "create shipper",
@@ -171,11 +172,12 @@ const renderEmployeeList = async (employees, warehouses, users, author) => {
 
 	while (container.firstChild) container.removeChild(container.firstChild);
 	Object.keys(employees).forEach((employeeID) => {
-		const { name, activeArea } = employees[employeeID];
+		const { name, activeArea, salary, deliveryItems: delivery, delivered } = employees[employeeID];
 		const employeeElement = document.createElement("tr");
 		const nameColumn = document.createElement("td");
 		const areaColumn = document.createElement("td");
 		const incomeColumn = document.createElement("td");
+		const orderShipping = document.createElement("td");
 		const orderShipped = document.createElement("td");
 		const actionColumn = document.createElement("td");
 		const deleteEmployeeBtn = document.createElement("button");
@@ -186,13 +188,18 @@ const renderEmployeeList = async (employees, warehouses, users, author) => {
 		});
 		nameColumn.innerText = name;
 		areaColumn.innerText = `Quận ${activeArea.district}, ${activeArea.city}`;
-		incomeColumn.innerText = `20000000`;
+		incomeColumn.innerText = salary;
+		if (delivery) orderShipping.innerText = Object.keys(delivery).length;
+		else orderShipping.innerText = 0;
+		if (delivered) orderShipping.innerText = Object.keys(delivered).length;
+		else orderShipped.innerText = 0;
 		orderShipped.innerText = `12`;
 		actionColumn.className = "d-flex justify-content-end";
 		actionColumn.style.margin = "0 -11px 0 0";
 		employeeElement.appendChild(nameColumn);
 		employeeElement.appendChild(areaColumn);
 		employeeElement.appendChild(incomeColumn);
+		employeeElement.appendChild(orderShipping);
 		employeeElement.appendChild(orderShipped);
 		actionColumn.appendChild(deleteEmployeeBtn);
 		employeeElement.appendChild(actionColumn);
