@@ -1,3 +1,5 @@
+import formatCurrency from "../lib/currency.js";
+
 const randomNumber = (min, max) => Math.floor(Math.random() * (max - min)) + min;
 
 const randomString = (length) => {
@@ -149,7 +151,7 @@ const renderList = (items) => {
 		titleElement.appendChild(nameElement);
 		titleElement.appendChild(closeElement);
 		subTitleElement.className = "block__item__sub-title";
-		subTitleElement.innerText = `${money} - ${district}, ${city}`;
+		subTitleElement.innerText = `${formatCurrency(String(money), "VND")} - ${district}, ${city}`;
 		subTitleElement.addEventListener("click", () => onEditClicked(items[itemID], itemID, itemElement));
 		itemElement.appendChild(titleElement);
 		itemElement.appendChild(subTitleElement);
