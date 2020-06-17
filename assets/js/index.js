@@ -156,6 +156,7 @@ const deliveryToStaff = (warehouse, author, itemsForEachEmployee, itemsRejected)
 		warehouse.child("logs/updatedTime").update({ item: getTime(), log: getTime() });
 	}
 	exportItems = {};
+	showExportItemsCount();
 };
 
 const onExportBtnClicked = async (warehouse, author) => {
