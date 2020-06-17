@@ -142,7 +142,7 @@ const deliveryToStaff = (warehouse, author, itemsForEachEmployee, itemsRejected)
 	Object.keys(itemsForEachEmployee).forEach((employeeID) => {
 		itemsForEachEmployee[employeeID].forEach((itemID) => {
 			exportItemsNumber += 1;
-			warehouse.child(`employees/${employeeID}/deliveryItems`).push(itemID);
+			warehouse.child(`employees/${employeeID}/deliveryItems/${itemID}`).update(itemID);
 			warehouse.child(`items/${itemID}/item`).update({ status: "delivery" });
 		});
 	});

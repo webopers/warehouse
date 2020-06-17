@@ -10,4 +10,11 @@ const formatCurrency = (money, unit) => {
 	return `${result.slice(0, result.length - 1)} ${unit || ""}`;
 };
 
-export default formatCurrency;
+const chargeShipping = (money, weight) => {
+	let result = 0;
+	result = Number(money) * (Number(weight) / 100);
+	if (result > 500000) result = 500000;
+	return Math.floor(result);
+};
+
+export { formatCurrency, chargeShipping };

@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="vi">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="shortcut icon" href="/assets/images/favicon.svg" type="image/x-icon" />
+		<link rel="stylesheet" href="/assets/css/bootstrap.min.css" />
+		<link rel="stylesheet" href="/assets/css/bootstrap-grid.min.css" />
+		<link rel="stylesheet" href="/assets/css/base.min.css?version=1.0.3" />
+		<link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+		<link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.12.0/css/all.css" />
+		<title>Warehouse Manager</title>
+	</head>
+	<body>
+		<header class="header">
+			<div class="container d-flex justify-content-between align-items-center">
+				<a href="/shipper/" class="brand">
+					<div class="brand__fancy">
+						<div class="brand__background"></div>
+					</div>
+					<div class="brand__text">
+						Group 8
+					</div>
+				</a>
+				<div class="topbar">
+					<a href="/shipper/" class="topbar__item active">
+						Kho hàng
+					</a>
+					<a href="/shipper/logs.html" class="topbar__item">
+						Nhật ký
+					</a>
+					<div class="account">
+						<div class="account__avatar">
+							<i class="fad fa-user"></i>
+						</div>
+						<div class="account__menu block">
+							<div class="list-group list-group-flush">
+								<a href="accounts/edit.html" class="list-group-item list-group-item-action lis border-0 rounded">
+									<i class="fal fa-list-ul account__menu__icon"></i>
+									Thông tin
+								</a>
+								<div class="list-group-item list-group-item-action border-0 rounded" id="logout">
+									<i class="fal fa-sign-out account__menu__icon"></i>
+									Đăng xuất
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</header>
+		<div class="loading d-flex align-items-center justify-content-center">
+			<div class="loading__spinner"></div>
+		</div>
+		<div class="paper container">
+			<div class="row">
+				<div class="col-lg-12">
+					<div class="block">
+						<div class="block__header">
+							<div class="block__heading">
+								Warehouse
+								<i class="far fa-angle-right"></i>
+								<span class="tab active delivery">Đang giao (0)</span>
+								<span class="tab delivered">Đã giao (0)</span>
+								<div class="block__sub-heading">Khu vực giao hàng của bạn: <span id="deliveryArea"></span></div>
+							</div>
+						</div>
+						<table class="table table-borderless">
+							<thead>
+								<tr>
+									<th>Đơn hàng</th>
+									<th>Khách hàng</th>
+									<th>Điện thoại</th>
+									<th>Địa chỉ</th>
+									<th></th>
+									<th></th>
+									<th></th>
+								</tr>
+							</thead>
+							<tbody id="warehouseItemsContainer"></tbody>
+						</table>
+						<div class="table-empty d-none">
+							<img src="/assets/images/empty-tray.svg" alt="List is empty" />
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="popup d-none" id="orderDetail">
+			<div class="popup__background d-flex align-items-center justify-content-center">
+				<div class="popup__block block p-5">
+					<div class="block__header">
+						<div class="block__heading">
+							Chi tiết đơn hàng
+						</div>
+						<button type="button" class="close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="list-group list-group-flush" style="margin: 14px -20px; font-weight: 500;">
+						<div class="list-group-item list-group-item-action border-0">
+							Tên mặt hàng:
+							<span class="font-weight-light" id="itemName">
+								Laptop Asus Vivobook A512DA-EJ406T AMD R5-3500U/Win10 (15.6 FHD)
+							</span>
+						</div>
+						<div class="list-group-item list-group-item-action border-0">
+							Số tiền thu hộ:
+							<span class="text-primary" id="itemMoney">
+								123.456.789 VND
+							</span>
+						</div>
+						<div class="list-group-item list-group-item-action border-0">
+							Tên người nhận:
+							<span class="font-weight-light" id="receiverName">
+								Nguyễn Khắc Khánh
+							</span>
+						</div>
+						<div class="list-group-item list-group-item-action border-0">
+							Điện thoại:
+							<span class="text-primary" id="receiverPhone">
+								012345678
+							</span>
+						</div>
+						<div class="list-group-item list-group-item-action border-0">
+							Email:
+							<span class="text-primary" id="receiverEmail">
+								encacap@gmail.com
+							</span>
+						</div>
+						<div class="list-group-item list-group-item-action border-0">
+							Địa chỉ:
+							<span class="font-weight-light" id="receiverAddress">
+								Đường số 14, Phường 12, Quận 10, Hồ Chí Minh
+							</span>
+						</div>
+					</div>
+					<div class="row mt-3 mb-1 pt-3">
+						<div class="col-5">
+							<button class="btn btn-block btn-danger d-flex align-items-center justify-content-center" id="rejectBtn">
+								<div class="spinner-border text-white spinner-border-sm mr-3 d-none"></div>
+								Không thể giao
+							</button>
+						</div>
+						<div class="col-7">
+							<button class="btn btn-block btn-primary d-flex align-items-center justify-content-center" id="successBtn">
+								<div class="spinner-border text-white spinner-border-sm mr-3 d-none"></div>
+								Đã giao
+							</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<script defer src="https://www.gstatic.com/firebasejs/7.15.0/firebase-app.js"></script>
+		<script defer src="https://www.gstatic.com/firebasejs/7.15.0/firebase-database.js"></script>
+		<script defer src="https://www.gstatic.com/firebasejs/7.15.0/firebase-auth.js"></script>
+		<script defer type="module" src="/assets/js/shipper.js?version=1.0.0"></script>
+	</body>
+</html>

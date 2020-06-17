@@ -172,7 +172,7 @@ const renderEmployeeList = async (employees, warehouses, users, author) => {
 
 	while (container.firstChild) container.removeChild(container.firstChild);
 	Object.keys(employees).forEach((employeeID) => {
-		const { name, activeArea, salary, deliveryItems: delivery, delivered } = employees[employeeID];
+		const { name, activeArea, salary, deliveryItems: delivery, deliveredItems: delivered } = employees[employeeID];
 		const employeeElement = document.createElement("tr");
 		const nameColumn = document.createElement("td");
 		const areaColumn = document.createElement("td");
@@ -181,6 +181,7 @@ const renderEmployeeList = async (employees, warehouses, users, author) => {
 		const orderShipped = document.createElement("td");
 		const actionColumn = document.createElement("td");
 		const deleteEmployeeBtn = document.createElement("button");
+		let salaryMoney = 0;
 		deleteEmployeeBtn.className = "btn btn-custom btn-sm btn-danger btn-export";
 		deleteEmployeeBtn.innerHTML = '<i class="fal fa-user-times pr-2 pl-1"></i> Xoá';
 		deleteEmployeeBtn.addEventListener("click", () => {
@@ -188,12 +189,16 @@ const renderEmployeeList = async (employees, warehouses, users, author) => {
 		});
 		nameColumn.innerText = name;
 		areaColumn.innerText = `Quận ${activeArea.district}, ${activeArea.city}`;
-		incomeColumn.innerText = salary;
+		if (salary) {
+			Object.keys(salary).forEach((salaryID) => {
+				salaryMoney += Number(salary[salaryID]);
+			});
+		}
+		incomeColumn.innerText = salaryMoney;
 		if (delivery) orderShipping.innerText = Object.keys(delivery).length;
 		else orderShipping.innerText = 0;
-		if (delivered) orderShipping.innerText = Object.keys(delivered).length;
+		if (delivered) orderShipped.innerText = Object.keys(delivered).length;
 		else orderShipped.innerText = 0;
-		orderShipped.innerText = `12`;
 		actionColumn.className = "d-flex justify-content-end";
 		actionColumn.style.margin = "0 -11px 0 0";
 		employeeElement.appendChild(nameColumn);

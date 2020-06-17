@@ -331,6 +331,7 @@ a:hover {
 		border-bottom-right-radius: 5px;
 	}
 	td {
+		height: 100%;
 		vertical-align: middle;
 	}
 	tr td:first-child {
@@ -352,6 +353,15 @@ a:hover {
 			color: $primaryColor;
 			td:first-child {
 				border-radius: 5px;
+			}
+		}
+	}
+	&-item {
+		&-detail {
+			color: $textColorLight;
+			font-size: 14px;
+			span {
+				margin: 0 4px;
 			}
 		}
 	}
