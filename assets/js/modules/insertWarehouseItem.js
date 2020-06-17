@@ -1,4 +1,4 @@
-import formatCurrency from "../lib/currency.js";
+import { formatCurrency } from "../lib/currency.js";
 
 const randomNumber = (min, max) => Math.floor(Math.random() * (max - min)) + min;
 
