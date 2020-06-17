@@ -248,6 +248,15 @@ firebase.auth().onAuthStateChanged((user) => {
 				});
 
 				checkUserPosition(userPosition);
+				const logoutBtn = document.querySelector("#logout");
+				logoutBtn.addEventListener("click", () => {
+					firebase
+						.auth()
+						.signOut()
+						.then(() => {
+							window.location.href = "/accounts/login.html";
+						});
+				});
 			});
 	}
 });

@@ -232,6 +232,15 @@ firebase.auth().onAuthStateChanged((user) => {
 				closeExportItemsError.addEventListener("click", () => {
 					document.querySelector("#exportItemsError").classList.add("d-none");
 				});
+				const logoutBtn = document.querySelector("#logout");
+				logoutBtn.addEventListener("click", () => {
+					firebase
+						.auth()
+						.signOut()
+						.then(() => {
+							window.location.href = "/accounts/login.html";
+						});
+				});
 			});
 	}
 });

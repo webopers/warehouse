@@ -6,7 +6,7 @@
 		<link rel="shortcut icon" href="/assets/images/favicon.svg" type="image/x-icon" />
 		<link rel="stylesheet" href="/assets/css/bootstrap.min.css" />
 		<link rel="stylesheet" href="/assets/css/bootstrap-grid.min.css" />
-		<link rel="stylesheet" href="/assets/css/base.min.css?version=1.0.1" />
+		<link rel="stylesheet" href="/assets/css/base.min.css?version=1.0.2" />
 		<link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
 		<link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.12.0/css/all.css" />
 		<title>Warehouse Manager</title>
@@ -32,6 +32,23 @@
 					<a href="/logs/" class="topbar__item">
 						Nhật ký
 					</a>
+					<div class="account">
+						<div class="account__avatar">
+							<i class="fad fa-user"></i>
+						</div>
+						<div class="account__menu block">
+							<div class="list-group list-group-flush">
+								<a href="accounts/edit.html" class="list-group-item list-group-item-action lis border-0 rounded">
+									<i class="fal fa-list-ul account__menu__icon"></i>
+									Thông tin
+								</a>
+								<div class="list-group-item list-group-item-action border-0 rounded" id="logout">
+									<i class="fal fa-sign-out account__menu__icon"></i>
+									Đăng xuất
+								</div>
+							</div>
+						</div>
+					</div>
 				</div>
 			</div>
 		</header>
@@ -141,6 +158,6 @@
 		<script defer src="https://www.gstatic.com/firebasejs/7.15.0/firebase-app.js"></script>
 		<script defer src="https://www.gstatic.com/firebasejs/7.15.0/firebase-database.js"></script>
 		<script defer src="https://www.gstatic.com/firebasejs/7.15.0/firebase-auth.js"></script>
-		<script defer type="module" src="/assets/js/import.js"></script>
+		<script defer type="module" src="/assets/js/import.js?version=1.2.0"></script>
 	</body>
 </html>

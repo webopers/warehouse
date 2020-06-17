@@ -102,6 +102,15 @@ firebase.auth().onAuthStateChanged((user) => {
 				importBtn.addEventListener("click", () => onImportClicked(getTime()));
 				randomBtn.addEventListener("click", () => onRandomClicked(getTime(), administrativeData));
 				confirmImportBtn.addEventListener("click", () => onConfirmImportClicked(warehouse, user.uid, getTime()));
+				const logoutBtn = document.querySelector("#logout");
+				logoutBtn.addEventListener("click", () => {
+					firebase
+						.auth()
+						.signOut()
+						.then(() => {
+							window.location.href = "/accounts/login.html";
+						});
+				});
 			});
 	}
 });

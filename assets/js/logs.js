@@ -67,6 +67,15 @@ firebase.auth().onAuthStateChanged((user) => {
 				logs.child("updatedTime/log").on("value", (updatedTime) => {
 					document.querySelector("#updatedTime").innerText = updatedTime.val();
 				});
+				const logoutBtn = document.querySelector("#logout");
+				logoutBtn.addEventListener("click", () => {
+					firebase
+						.auth()
+						.signOut()
+						.then(() => {
+							window.location.href = "/accounts/login.html";
+						});
+				});
 			});
 	}
 });
