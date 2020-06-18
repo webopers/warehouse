@@ -124,12 +124,12 @@ const getWarehouseItems = (warehouse, employees, filter) => {
 			warehouseItems = warehouseItemsData.val();
 			if (deliveryItems) {
 				Object.keys(deliveryItems).forEach((itemID) => {
-					employeeItems[itemID] = { ...warehouseItems[deliveryItems[itemID]] };
+					employeeItems[itemID] = { ...warehouseItems[itemID], itemID };
 				});
 			}
 			if (deliveredItems) {
 				Object.keys(deliveredItems).forEach((itemID) => {
-					employeeItems[itemID] = { ...warehouseItems[deliveredItems[itemID]] };
+					employeeItems[itemID] = { ...warehouseItems[itemID], itemID };
 				});
 			}
 			render({ warehouse, employees }, employeeItems, filter);
