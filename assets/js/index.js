@@ -1,5 +1,6 @@
 import firebase from "./firebase-config.js";
 import { getTime } from "./lib/time.js";
+import sort from "./lib/sort.js";
 
 const developmentEnvironment = window.location.href.split("/")[2] !== "warehouse.webopers.com";
 
@@ -122,7 +123,7 @@ const render = (items, filter) => {
 
 const getWarehouseItems = (warehouse, filter) => {
 	warehouse.on("value", (dataSnapshot) => {
-		render(dataSnapshot.val(), filter);
+		render(sort("quicksort", dataSnapshot.val(), "exportDate", "desc"), filter);
 	});
 };
 
