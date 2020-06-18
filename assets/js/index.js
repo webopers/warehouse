@@ -142,7 +142,7 @@ const deliveryToStaff = (warehouse, author, itemsForEachEmployee, itemsRejected)
 	Object.keys(itemsForEachEmployee).forEach((employeeID) => {
 		itemsForEachEmployee[employeeID].forEach((itemID) => {
 			exportItemsNumber += 1;
-			warehouse.child(`employees/${employeeID}/deliveryItems/${itemID}`).update(itemID);
+			warehouse.child(`employees/${employeeID}/deliveryItems/${itemID}`).update({ itemID });
 			warehouse.child(`items/${itemID}/item`).update({ status: "delivery" });
 		});
 	});
@@ -154,9 +154,9 @@ const deliveryToStaff = (warehouse, author, itemsForEachEmployee, itemsRejected)
 			time: getTime(),
 		});
 		warehouse.child("logs/updatedTime").update({ item: getTime(), log: getTime() });
+		exportItems = {};
+		showExportItemsCount();
 	}
-	exportItems = {};
-	showExportItemsCount();
 };
 
 const onExportBtnClicked = async (warehouse, author) => {
@@ -169,15 +169,17 @@ const onExportBtnClicked = async (warehouse, author) => {
 		.then((employeesData) => {
 			employees = employeesData.val();
 		});
-	Object.keys(employees).forEach((employeeID) => {
-		let districtEmployees = exportEmployees[employees[employeeID].activeArea.district];
-		if (districtEmployees) {
-			districtEmployees.push(employeeID);
-		} else {
-			districtEmployees = [employeeID];
-		}
-		exportEmployees[employees[employeeID].activeArea.district] = districtEmployees;
-	});
+	if (employees) {
+		Object.keys(employees).forEach((employeeID) => {
+			let districtEmployees = exportEmployees[employees[employeeID].activeArea.district];
+			if (districtEmployees) {
+				districtEmployees.push(employeeID);
+			} else {
+				districtEmployees = [employeeID];
+			}
+			exportEmployees[employees[employeeID].activeArea.district] = districtEmployees;
+		});
+	}
 	Object.keys(exportItems).forEach((district) => {
 		if (exportEmployees[district]) {
 			const districtEmployeeNumber = exportEmployees[district].length;
