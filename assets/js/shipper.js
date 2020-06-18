@@ -1,6 +1,7 @@
 import firebase from "./firebase-config.js";
 import { getTime } from "./lib/time.js";
 import { formatCurrency, chargeShipping } from "./lib/currency.js";
+import sort from "./lib/sort.js";
 
 const developmentEnvironment = window.location.href.split("/")[2] !== "warehouse.webopers.com";
 
@@ -119,20 +120,16 @@ const getWarehouseItems = (warehouse, employees, filter) => {
 	const employeeItems = {};
 	employees.on("value", (dataSnapshot) => {
 		const { deliveryItems, deliveredItems, activeArea } = dataSnapshot.val();
+		const items = { ...deliveryItems, ...deliveredItems };
 		document.querySelector("#deliveryArea").innerText = `Quận ${activeArea.district}, ${activeArea.city}`;
 		warehouse.on("value", (warehouseItemsData) => {
 			warehouseItems = warehouseItemsData.val();
-			if (deliveryItems) {
-				Object.keys(deliveryItems).forEach((itemID) => {
+			if (items) {
+				Object.keys(items).forEach((itemID) => {
 					employeeItems[itemID] = { ...warehouseItems[itemID], itemID };
 				});
 			}
-			if (deliveredItems) {
-				Object.keys(deliveredItems).forEach((itemID) => {
-					employeeItems[itemID] = { ...warehouseItems[itemID], itemID };
-				});
-			}
-			render({ warehouse, employees }, employeeItems, filter);
+			render({ warehouse, employees }, sort("quicksort", employeeItems, "exportDate", "desc"), filter);
 		});
 	});
 };
