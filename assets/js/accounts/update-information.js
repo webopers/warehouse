@@ -71,8 +71,8 @@ const removeAlert = (alertNodeID) => {
 const doUpdate = (databases, name) => {
 	const { warehouse, userDatabase: user } = databases;
 	// const credentials = firebase.auth.EmailAuthProvider.credential(currentUser.email, password);
-	warehouse.update({ name });
 	user.update({ name });
+	if (userPosition === "shipper") warehouse.update({ name });
 	showAlert("success", "Cập nhật thông tin thành công");
 	// currentUser
 	// 	.reauthenticateWithCredential(credentials)
